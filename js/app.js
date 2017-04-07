@@ -1,3 +1,39 @@
+var map;
+var markersArray = [];
+
+openNav();
+
+
+
+
+/* Set the width of the side navigation to 250px */
+function openNav() {
+    var nav = document.getElementById("mySidenav");
+    
+    if($(window).width() > 1200) {
+        nav.style.width = "20%";
+    }else if($(window).width() > 922) {
+        nav.style.width = "20%";
+    }else if($(window).width() > 768) {
+        nav.style.width = "30%";
+    }else{
+        nav.style.width = "80%";
+    }
+
+    var height = $('.map-parent').height();
+
+    nav.style.height = (height - 20) + "px";
+
+    //console.log();
+}
+
+
+/* Set the width of the side navigation to 0 */
+function closeNav() {
+    document.getElementById("mySidenav").style.width = "0";
+}
+
+
 var model = {
 	currentRestaurant: null,
 	restaurants: [
@@ -254,5 +290,196 @@ var ViewModel = function(){
 	 };
 
 };
+
+
+function initMap(){
+
+	// styles reference: https://snazzymaps.com/style/38/shades-of-grey
+
+	var styles = [
+		{
+		    "featureType": "all",
+		    "elementType": "labels.text.fill",
+		    "stylers": [
+		        {
+		            "saturation": 36
+		        },
+		        {
+		            "lightness": 40
+		        }
+		    ]
+		},
+		{
+		    "featureType": "all",
+		    "elementType": "labels.text.stroke",
+		    "stylers": [
+		        {
+		            "visibility": "on"
+		        },
+		        {
+		            "color": "#000000"
+		        },
+		        {
+		            "lightness": 16
+		        }
+		    ]
+		},
+		{
+		    "featureType": "all",
+		    "elementType": "labels.icon",
+		    "stylers": [
+		        {
+		            "visibility": "off"
+		        }
+		    ]
+		},
+		{
+		    "featureType": "administrative",
+		    "elementType": "geometry.fill",
+		    "stylers": [
+		        {
+		            "color": "#000000"
+		        },
+		        {
+		            "lightness": 20
+		        }
+		    ]
+		},
+		{
+		    "featureType": "administrative",
+		    "elementType": "geometry.stroke",
+		    "stylers": [
+		        {
+		            "color": "#000000"
+		        },
+		        {
+		            "lightness": 17
+		        },
+		        {
+		            "weight": 1.2
+		        }
+		    ]
+		},
+		{
+		    "featureType": "landscape",
+		    "elementType": "geometry",
+		    "stylers": [
+		        {
+		            "color": "#000000"
+		        },
+		        {
+		            "lightness": 20
+		        }
+		    ]
+		},
+		{
+		    "featureType": "poi",
+		    "elementType": "geometry",
+		    "stylers": [
+		        {
+		            "color": "#000000"
+		        },
+		        {
+		            "lightness": 21
+		        }
+		    ]
+		},
+		{
+		    "featureType": "road.highway",
+		    "elementType": "geometry.fill",
+		    "stylers": [
+		        {
+		            "color": "#000000"
+		        },
+		        {
+		            "lightness": 17
+		        }
+		    ]
+		},
+		{
+		    "featureType": "road.highway",
+		    "elementType": "geometry.stroke",
+		    "stylers": [
+		        {
+		            "color": "#000000"
+		        },
+		        {
+		            "lightness": 29
+		        },
+		        {
+		            "weight": 0.2
+		        }
+		    ]
+		},
+		{
+		    "featureType": "road.arterial",
+		    "elementType": "geometry",
+		    "stylers": [
+		        {
+		            "color": "#000000"
+		        },
+		        {
+		            "lightness": 18
+		        }
+		    ]
+		},
+		{
+		    "featureType": "road.local",
+		    "elementType": "geometry",
+		    "stylers": [
+		        {
+		            "color": "#000000"
+		        },
+		        {
+		            "lightness": 16
+		        }
+		    ]
+		},
+		{
+		    "featureType": "transit",
+		    "elementType": "geometry",
+		    "stylers": [
+		        {
+		            "color": "#000000"
+		        },
+		        {
+		            "lightness": 19
+		        }
+		    ]
+		},
+		{
+		    "featureType": "water",
+		    "elementType": "geometry",
+		    "stylers": [
+		        {
+		            "color": "#000000"
+		        },
+		        {
+		            "lightness": 17
+		        }
+		    ]
+		}
+	];
+
+	map = new google.maps.Map(document.getElementById('map'), {
+		center: {lat: 39.2904, lng: -76.6122},
+		zoom: 13,
+		styles: styles,
+		mapTypeControl: false
+	});
+	// var lees = {lat: 39.28242, lng:-76.575708};
+			// var marker = new google.maps.Marker({
+			// 	position: lees,
+			// 	map: map,
+			// 	title: "Lee's Pint & Shell"
+			// });
+			// var infowindow = new google.maps.InfoWindow({
+			// 	content: "Lee's pint and shell"
+			// });
+
+			// marker.addListener('click', function(){
+			// 	infowindow.open(map, marker)
+			// });
+		}
 
 ko.applyBindings(new ViewModel());

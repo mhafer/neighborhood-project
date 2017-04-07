@@ -1,0 +1,234 @@
+
+html, body {
+    background-color: #333;
+  }
+  .row {
+    margin-left: 5px;
+    margin-right: 15px;
+    margin-bottom: -20px;
+  }
+  #map,
+  #marker-info {
+    min-height: 600px;
+    height:100%;
+      width: 100%;
+
+  }
+
+  #marker-info {
+    margin-bottom: -20px
+  }
+
+  div .marker-parent,
+  div .map-parent {
+    padding-left: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+
+  }
+
+  div .marker-parent {
+    background-color: #ff8c00;
+    padding-right: 20px;
+    margin-bottom: -20px;
+  }
+
+  .container-fluid {
+    background-color: #333;
+    height: 100%;
+  }
+
+  .container-1{
+  width: 300px;
+  vertical-align: middle;
+  white-space: nowrap;
+  position: relative;
+}
+
+.container-1 input #search{
+  width: 300px;
+  height: 50px;
+  background: #2b303b;
+  border: none;
+  font-size: 10pt;
+  float: left;
+  color: #fff;
+  padding-left: 45px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+}
+
+.container-1 .icon{
+  position: absolute;
+  top: 50%;
+  margin-left: 17px;
+  margin-top: 17px;
+  z-index: 1;
+  color: #333;
+}
+
+  /* reference: https://www.w3schools.com/howto/howto_js_sidenav.asp*/
+
+  /* The side navigation menu */
+  .sidenav {
+      height: 50%; /* 100% Full-height */
+      width: 0; /* 0 width - change this with JavaScript */
+      position: fixed;  /*Stay in place */
+      z-index: 1;  /*Stay on top */
+      /*top: 0;*/
+      /*left: 0;*/
+      background-color: #6591bb; /* Black*/
+      opacity: .7;
+      overflow-x: hidden; /* Disable horizontal scroll */
+      padding-top: 20px; /* Place content 60px from the top */
+      transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
+  }
+
+  /* The navigation menu links */
+  .sidenav li {
+      padding: 8px 8px 8px 32px;
+      text-decoration: none;
+      font-size: 16px;
+      color: #fff;
+      display: block;
+      transition: 0.3s
+  }
+
+  /* When you mouse over the navigation links, change their color */
+  .sidenav li:hover, .offcanvas li:focus{
+      color: #f1f1f1;
+  }
+
+  /* Position and style the close button (top right corner) */
+  .sidenav .closebtn {
+      position: absolute;
+      top: 0;
+      right: 25px;
+      color: #fff;
+      font-size: 36px;
+      margin-left: 50px;
+  }
+  .orange {
+    color: #ff8c00;
+  }
+  p {
+    color: #fff;
+  }
+
+  .shadow {
+     -moz-box-shadow:    inset 0 0 10px #000000;
+     -webkit-box-shadow: inset 0 0 10px #000000;
+     box-shadow:         inset 0 0 10px #000000;
+  }
+
+/* Footer: Social Media Section */
+
+footer {
+  z-index: 2;
+  border-top: 1px solid #e0e0e0;
+  padding: 1em;
+  text-align: center;
+  background-color: #333;
+}
+
+footer ul {
+  padding-left: 0;
+  
+}
+
+footer li {
+  display: inline-block;
+  padding: 10px 0 10px;
+}
+
+footer h2 {
+  margin: 40px;
+}
+
+.social-link {
+  text-decoration: none;
+  color: #fff;
+  padding: 1.5;
+  font-size: 16px;
+}
+
+[class*="fontawesome-"]:before {
+  color: #fff;
+  display: inline-block;
+  font-family: "fontawesome", sans-serif;
+  width: 5em;
+}
+
+.copyright {
+  font-size: 10px;
+}
+
+.fancy-text {
+  font-family: "Pacifico", sans-serif;
+  color: #fff;
+  font-size: 14px;
+}
+
+.signature-text a {
+  font-family: "Lato", sans-serif;
+  font-size: 14px;
+  color: #fff;
+  opacity: 0.7;
+}
+
+.search-bar {
+  height: 50px;
+}
+
+.search-form .form-group {
+  float: right !important;
+  transition: all 0.35s, border-radius 0s;
+  width: 32px;
+  height: 32px;
+  background-color: #fff;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+  border-radius: 25px;
+  border: 1px solid #ccc;
+}
+.search-form .form-group input.form-control {
+  padding-right: 20px;
+  border: 0 none;
+  background: transparent;
+  box-shadow: none;
+  display:block;
+}
+.search-form .form-group input.form-control::-webkit-input-placeholder {
+  display: none;
+}
+.search-form .form-group input.form-control:-moz-placeholder {
+  /* Firefox 18- */
+  display: none;
+}
+.search-form .form-group input.form-control::-moz-placeholder {
+  /* Firefox 19+ */
+  display: none;
+}
+.search-form .form-group input.form-control:-ms-input-placeholder {
+  display: none;
+}
+.search-form .form-group:hover,
+.search-form .form-group.hover {
+  width: 100%;
+  border-radius: 4px 25px 25px 4px;
+}
+.search-form .form-group span.form-control-feedback {
+  position: absolute;
+  top: -1px;
+  right: -2px;
+  z-index: 2;
+  display: block;
+  width: 34px;
+  height: 34px;
+  line-height: 34px;
+  text-align: center;
+  color: #3596e0;
+  left: initial;
+  font-size: 14px;
+}
+

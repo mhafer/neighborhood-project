@@ -1,219 +1,79 @@
 <!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8">
-		<title>Google Maps</title>
-		<style>
-			#map {
-				height: 650px;
-				width: 80%;
-				margin: 0 auto;
-			}
 
-		</style>
-	</head>
-	<body>
-		<ul data-bind="foreach: restaurantList">
-    		<li data-bind="text: name, click: $parent.setRestaurant"></li>
-		</ul>
+<head>
+    <meta charset="utf-8">
+    <title>Google Maps</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <!--  google fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:100,300|Pacifico">
+    <!-- icon font awesome -->
+    <link rel="stylesheet" href="http://weloveiconfonts.com/api/?family=fontawesome">
+</head>
 
-		<div id="map"></div>
+<body>
+    <div class="container-fluid">
+        <div class="row search-bar">
+            <div class="col-sm-12 col-md-12 col-lg-12">
+             <span class="glyphicon glyphicon-list" onclick="openNav()" style="color: #fff;"></span>
+            <form action="" class="search-form">
+                <div class="form-group has-feedback">
+                    <label for="search" class="sr-only">Search</label>
+                    <input type="text" class="form-control" name="search" id="search" placeholder="search">
+                    <span class="glyphicon glyphicon-search form-control-feedback"></span>
+                </div>
+            </form>
+        </div>
+        <div class="row display-area">
+            <div class="col-sm-8 col-md-9 col-lg-9 col-xl-10 map-parent">
+                <div id="mySidenav" class="sidenav img-responsive">
+                    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+                    <ul data-bind="foreach: restaurantList">
+                        <li data-bind="text: name, click: $parent.setRestaurant"></li>
+                    </ul>
+                </div>
+                <div id="map"></div>
+            </div>
 
-	<script>
+            <div class="col-sm-4 col-md-3 col-lg-3 col-xl-10 marker-parent shadow">
+                <div id="marker-info">
+                    <h2>Name of Place</h2>
+                    <h3>Address</h3>
+                    <p>Comment area</p>
+                </div>
+            </div>
 
-		var map;
-		function initMap(){
-			var styles = [
-				{
-				    "featureType": "all",
-				    "elementType": "labels.text.fill",
-				    "stylers": [
-				        {
-				            "saturation": 36
-				        },
-				        {
-				            "color": "#000000"
-				        },
-				        {
-				            "lightness": 40
-				        }
-				    ]
-				},
-				{
-				    "featureType": "all",
-				    "elementType": "labels.text.stroke",
-				    "stylers": [
-				        {
-				            "visibility": "on"
-				        },
-				        {
-				            "color": "#000000"
-				        },
-				        {
-				            "lightness": 16
-				        }
-				    ]
-				},
-				{
-				    "featureType": "all",
-				    "elementType": "labels.icon",
-				    "stylers": [
-				        {
-				            "visibility": "off"
-				        }
-				    ]
-				},
-				{
-				    "featureType": "administrative",
-				    "elementType": "geometry.fill",
-				    "stylers": [
-				        {
-				            "color": "#000000"
-				        },
-				        {
-				            "lightness": 20
-				        }
-				    ]
-				},
-				{
-				    "featureType": "administrative",
-				    "elementType": "geometry.stroke",
-				    "stylers": [
-				        {
-				            "color": "#000000"
-				        },
-				        {
-				            "lightness": 17
-				        },
-				        {
-				            "weight": 1.2
-				        }
-				    ]
-				},
-				{
-				    "featureType": "landscape",
-				    "elementType": "geometry",
-				    "stylers": [
-				        {
-				            "color": "#000000"
-				        },
-				        {
-				            "lightness": 20
-				        }
-				    ]
-				},
-				{
-				    "featureType": "poi",
-				    "elementType": "geometry",
-				    "stylers": [
-				        {
-				            "color": "#000000"
-				        },
-				        {
-				            "lightness": 21
-				        }
-				    ]
-				},
-				{
-				    "featureType": "road.highway",
-				    "elementType": "geometry.fill",
-				    "stylers": [
-				        {
-				            "color": "#000000"
-				        },
-				        {
-				            "lightness": 17
-				        }
-				    ]
-				},
-				{
-				    "featureType": "road.highway",
-				    "elementType": "geometry.stroke",
-				    "stylers": [
-				        {
-				            "color": "#000000"
-				        },
-				        {
-				            "lightness": 29
-				        },
-				        {
-				            "weight": 0.2
-				        }
-				    ]
-				},
-				{
-				    "featureType": "road.arterial",
-				    "elementType": "geometry",
-				    "stylers": [
-				        {
-				            "color": "#000000"
-				        },
-				        {
-				            "lightness": 18
-				        }
-				    ]
-				},
-				{
-				    "featureType": "road.local",
-				    "elementType": "geometry",
-				    "stylers": [
-				        {
-				            "color": "#000000"
-				        },
-				        {
-				            "lightness": 16
-				        }
-				    ]
-				},
-				{
-				    "featureType": "transit",
-				    "elementType": "geometry",
-				    "stylers": [
-				        {
-				            "color": "#000000"
-				        },
-				        {
-				            "lightness": 19
-				        }
-				    ]
-				},
-				{
-				    "featureType": "water",
-				    "elementType": "geometry",
-				    "stylers": [
-				        {
-				            "color": "#000000"
-				        },
-				        {
-				            "lightness": 17
-				        }
-				    ]
-				}
-			];
-			map = new google.maps.Map(document.getElementById('map'), {
-				center: {lat: 39.2904, lng: -76.6122},
-				zoom: 13,
-				//styles: styles,
-				//mapTypeControl: false
-			});
-			// var lees = {lat: 39.28242, lng:-76.575708};
-			// var marker = new google.maps.Marker({
-			// 	position: lees,
-			// 	map: map,
-			// 	title: "Lee's Pint & Shell"
-			// });
-			// var infowindow = new google.maps.InfoWindow({
-			// 	content: "Lee's pint and shell"
-			// });
-
-			// marker.addListener('click', function(){
-			// 	infowindow.open(map, marker)
-			// });
-		}
-	</script>
-	<script  async defer src="http://maps.googleapis.com/maps/api/js?key=AIzaSyC0TkfOlixEJ_CtnCSIu3eVnt5yUXJuuGE&v=3&callback=initMap"></script>
-	<script src="js/lib/knockout-3.4.2.js"></script>
+        </div>
+        <footer class="row">
+            <div id="lets-connect" class="col-sm-12 col-md-12 col-lg-12">
+                <h2 class="orange">Let's Connect</h2>
+                <ul>
+                    <li>
+                        <a href="https://www.linkedin.com/in/michellesalema" class="fontawesome-linkedin social-link" target="_blank" title="Michelle's LinkedIn"></a>
+                    </li>
+                    <li>
+                        <a href="mailto:missmichellesalema@gmail.com" class="fontawesome-envelope social-link" target="_blank" title="missmichellesalema@gmail.com"></a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/mhafer/Udacity-FrontEnd-Nanodegree" class="fontawesome-github social-link" target="_blank" title="Michelle's Github Account"></a>
+                    </li>
+                </ul>
+                <!-- copyright line -->
+                <p class="copyright">Copyright© 2017 Developed By
+                    <span class="fancy-text">by </span>
+                    <span class="signature-text"><a href="http://www.michellesalema.com" target="_blank" title="Michelle's Previous Website">Michelle Hafer</a></span>
+                </p>
+            </div>
+        </footer>
+    </div>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+    <script async defer src="js/bootstrap.min.js"></script>
+    <script src="js/lib/knockout-3.4.2.js"></script>
     <script async src="js/app.js"></script>
-
-	</body>
+    <script async defer src="http://maps.googleapis.com/maps/api/js?key=AIzaSyC0TkfOlixEJ_CtnCSIu3eVnt5yUXJuuGE&v=3&callback=initMap"></script>
+</body>
 </html>
