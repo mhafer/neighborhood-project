@@ -9,26 +9,32 @@
     <meta name="mobile-web-app-capable" content="yes">
     <!--  google fonts -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:100,300|Pacifico">
+    <link href="https://fonts.googleapis.com/css?family=Palanquin" rel="stylesheet">
     <!-- icon font awesome -->
     <link rel="stylesheet" href="http://weloveiconfonts.com/api/?family=fontawesome">
 </head>
 
 <body>
     <div class="container-fluid">
+
         <div class="row search-bar">
-            <div class="col-sm-12 col-md-12 col-lg-12">
-             <span class="glyphicon glyphicon-list" onclick="openNav()" style="color: #fff;"></span>
-            <form action="" class="search-form">
-                <div class="form-group has-feedback">
-                    <label for="search" class="sr-only">Search</label>
-                    <input type="text" class="form-control" name="search" id="search" placeholder="search">
-                    <span class="glyphicon glyphicon-search form-control-feedback"></span>
-                </div>
-            </form>
+            <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 menu-item">
+                <span class="glyphicon glyphicon-list" onclick="openNav()" style="color: #fff;"></span>
+            </div>
+            <div class="col-xs-10 col-sm-11 col-md-11 col-lg-11 float-right">
+                <form action="" class="search-form">
+                    <div class="form-group has-feedback">
+                        <label for="search" class="sr-only">Search by name or type 'sushi' or 'american'</label>
+                        <input type="text" class="form-control" name="search" id="search" placeholder="search">
+                        <span class="glyphicon glyphicon-search form-control-feedback"></span>
+                    </div>
+                </form>
+            </div>
         </div>
-        <div class="row display-area">
+
+        <div class="row display-area no-gutters">
             <div class="col-sm-8 col-md-9 col-lg-9 col-xl-10 map-parent">
-                <div id="mySidenav" class="sidenav img-responsive">
+                <div id="mySidenav" class="sidenav">
                     <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
                     <ul data-bind="foreach: restaurantList">
                         <li data-bind="text: name, click: $parent.setRestaurant"></li>
@@ -39,12 +45,11 @@
 
             <div class="col-sm-4 col-md-3 col-lg-3 col-xl-10 marker-parent shadow">
                 <div id="marker-info">
-                    <h2>Name of Place</h2>
-                    <h3>Address</h3>
-                    <p>Comment area</p>
+                    <h2>So, you want to eat?</h2>
+                    <h3>Click on the map</h3>
+                    <p>Find some yummy recommendations!</p>
                 </div>
             </div>
-
         </div>
         <footer class="row">
             <div id="lets-connect" class="col-sm-12 col-md-12 col-lg-12">
@@ -60,7 +65,7 @@
                         <a href="https://github.com/mhafer/Udacity-FrontEnd-Nanodegree" class="fontawesome-github social-link" target="_blank" title="Michelle's Github Account"></a>
                     </li>
                 </ul>
-                <!-- copyright line -->
+
                 <p class="copyright">Copyright© 2017 Developed By
                     <span class="fancy-text">by </span>
                     <span class="signature-text"><a href="http://www.michellesalema.com" target="_blank" title="Michelle's Previous Website">Michelle Hafer</a></span>

@@ -3,9 +3,6 @@ var markersArray = [];
 
 openNav();
 
-
-
-
 /* Set the width of the side navigation to 250px */
 function openNav() {
     var nav = document.getElementById("mySidenav");
@@ -16,8 +13,10 @@ function openNav() {
         nav.style.width = "20%";
     }else if($(window).width() > 768) {
         nav.style.width = "30%";
+    }else if($(window).width() > 420) {
+        nav.style.width = "66%";
     }else{
-        nav.style.width = "80%";
+        nav.style.width = "90%";
     }
 
     var height = $('.map-parent').height();
