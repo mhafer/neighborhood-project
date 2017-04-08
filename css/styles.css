@@ -19,6 +19,9 @@ body {
     height: 100%;
     width: 100%;
 }
+#map {
+
+}
 #marker-info {
     padding: 40px 20px 0 20px;
     text-align: center;
@@ -61,28 +64,14 @@ div .marker-parent {
 
 .sidenav {
     height: 50%;
-    /* 100% Full-height */
-    
     width: 0;
-    /* 0 width - change this with JavaScript */
-    
-    position: fixed;
-    /*Stay in place */
-    
-    z-index: 1;
-    /*Stay on top */
-    /*top: 0;*/
-    /*left: 0;*/
-    
-    background-color: rgba(101,145,187,.7);
-    /* Blue*/
-    
+    /* 0 width - change this with JavaScript */   
+    position: absolute;  
+    z-index: 1; 
+    background-color: rgba(101,145,187,.7);  
     overflow-x: hidden;
-    /* Disable horizontal scroll */
-    
-    padding-top: 17px;
-    /* Place content 20px from the top */
-    
+    /* Disable horizontal scroll */   
+    padding-top: 25px; 
     transition: 0.5s;
     /* 0.5 second transition effect to slide in the sidenav */
 }
@@ -140,6 +129,7 @@ footer h2 {
 }
 .copyright {
     font-size: 10px;
+    margin-top: 0;
 }
 .fancy-text {
     font-family: "Pacifico", sans-serif;
