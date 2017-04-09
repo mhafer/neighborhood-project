@@ -8,11 +8,11 @@ function openNav() {
     var nav = document.getElementById("mySidenav");
     
     if($(window).width() > 1200) {
-        nav.style.width = "20%";
-    }else if($(window).width() > 922) {
-        nav.style.width = "20%";
-    }else if($(window).width() > 768) {
         nav.style.width = "30%";
+    }else if($(window).width() > 922) {
+        nav.style.width = "36%";
+    }else if($(window).width() > 768) {
+        nav.style.width = "42%";
     }else if($(window).width() > 420) {
         nav.style.width = "66%";
     }else{
@@ -43,6 +43,7 @@ var model = {
 			type: ["Pub", "Bar", "Seafood"],
 			comments:"Great Food",
 			url:"www.leespintandshell.com",
+			location: {lat:39.282347, lng:-76.575689},
 			lat:39.282347,
 			lng:-76.575689
 		},
@@ -53,6 +54,7 @@ var model = {
 			type: ["Breakfast","American", "Greek", "Diner", "Mediterranean"],
 			comments:"Great Food",
 			url:"www.sipandbite.com",
+			location:{lat:39.283959, lng:-76.585578},
 			lat:39.283959,
 			lng:-76.585578
 		},
@@ -63,6 +65,7 @@ var model = {
 			type: ["New American", "Fine Dining", "Cocktails"],
 			comments:"Great Food",
 			url:"www.theforkandwrench.com",
+			location:{lat: 39.282901, lng: -76.583881},
 			lat: 39.282901,
 			lng: -76.583881
 		},
@@ -73,6 +76,7 @@ var model = {
 			type: ["Bakery","Dessert"],
 			comments:"Great Food",
 			url:"dangerouspiesbalt.com",
+			location: {lat: 39.279923, lng: -76.575537},
 			lat: 39.279923,
 			lng: -76.575537
 		},
@@ -83,6 +87,7 @@ var model = {
 			type: ["Italian", "Deli"],
 			comments:"Great Food",
 			url:"www.dipasquales.com",
+			location: {lat: 39.288904, lng: -76.566489},
 			lat: 39.288904,
 			lng: -76.566489
 		},
@@ -93,6 +98,7 @@ var model = {
 			type: ["New American","Seafood","Contemporary"],
 			comments:"Great Food",
 			url:"www.boathousecanton.com",
+			location: {lat: 39.276836, lng: -76.576378},
 			lat: 39.276836,
 			lng: -76.576378
 		},
@@ -103,6 +109,7 @@ var model = {
 			type: ["New American","Cocktails","Fine Dining"],
 			comments:"Great Food",
 			url:"caskandgrainkitchen.com",
+			location: {lat: 39.279865, lng: -76.575957},
 			lat: 39.279865,
 			lng: -76.575957
 		},
@@ -113,6 +120,7 @@ var model = {
 			type: ["American","Fine Dining"],
 			comments:"Great Food",
 			url:"www.woodberrykitchen.com",
+			location: {lat: 39.332001, lng: -76.64568},
 			lat: 39.332001,
 			lng: -76.64568
 		},
@@ -123,6 +131,7 @@ var model = {
 			type: ["Sushi", "Asian"],
 			comments:"Great Food",
 			url:"www.rasushi.com",
+			location: {lat: 39.282465, lng: -76.597435},
 			lat: 39.282465,
 			lng: -76.597435
 		},
@@ -133,6 +142,7 @@ var model = {
 			type: ["Asian"],
 			comments:"Great Food",
 			url:"ekibenbaltimore.com",
+			location: {lat: 39.285737, lng: -76.594554},
 			lat: 39.285737,
 			lng: -76.594554
 		},
@@ -143,6 +153,7 @@ var model = {
 			type: ["Southern", "Bar","Pub"],
 			comments:"Great Food",
 			url:"southern-provisions.com",
+			location: {lat: 39.28056, lng: -76.573867},
 			lat: 39.28056,
 			lng: -76.573867
 		},
@@ -153,6 +164,7 @@ var model = {
 			type: ["Italian","Pizza"],
 			comments:"Great Food",
 			url:"www.verdepizza.com",
+			location: {lat: 39.284113, lng: -76.582571},
 			lat: 39.284113,
 			lng: -76.582571
 		},
@@ -163,7 +175,8 @@ var model = {
 			type: ["Pizza","Bar","Pub"],
 			comments:"Great Food",
 			url:"www.homeslyce.com",
-			lat: 39.282027,
+			location: {lat: 39.2820, lng: -76.577158},
+			lat: 39.2820,
 			lng: -76.577158
 		},
 		{
@@ -173,6 +186,7 @@ var model = {
 			type: ["Bar","Pub"],
 			comments:"Great Food",
 			url:"smaltimorebaltimore.com",
+			location: {lat: 39.283255, lng: -76.58041},
 			lat: 39.283255,
 			lng: -76.58041
 		},
@@ -183,6 +197,7 @@ var model = {
 			type: ["Bar","Pub"],
 			comments:"Great Food",
 			url:"www.hudsonstreetstackhouse.com",
+			location: {lat: 39.282294, lng: -76.578838},
 			lat: 39.282294,
 			lng: -76.578838
 		},
@@ -193,6 +208,7 @@ var model = {
 			type: ["Pub","Bar"],
 			comments:"Great Food",
 			url:"www.kooperstavern.com",
+			location: {lat: 39.282027, lng: -76.592431},
 			lat: 39.282027,
 			lng: -76.592431
 		},
@@ -203,6 +219,7 @@ var model = {
 			type: ["Pub","Bar","Burgers"],
 			comments:"Great Food",
 			url:"www.abbeyburgerbistro.com",
+			location: {lat: 39.282204, lng: -76.592697},
 			lat: 39.282204,
 			lng: -76.592697
 		},
@@ -213,6 +230,7 @@ var model = {
 			type: ["Sushi","Asian","Noodles"],
 			comments:"Great Food",
 			url:"http://www.shisotavern.com",
+			location: {lat: 39.279923, lng: -76.574212},
 			lat: 39.279923,
 			lng: -76.574212
 		},
@@ -223,6 +241,7 @@ var model = {
 			type: ["Asian","Indian"],
 			comments:"Great Food",
 			url:"www.jasakabob.com",
+			location: {lat: 39.279906, lng: -76.574872},
 			lat: 39.279906,
 			lng: -76.574872
 		},
@@ -233,6 +252,7 @@ var model = {
 			type: ["Asian","Noodles"],
 			comments:"Great Food",
 			url:"saigontodaybmore.com",
+			location: {lat: 39.284189, lng: -76.574399},
 			lat: 39.284189,
 			lng: -76.574399
 		},
@@ -243,6 +263,7 @@ var model = {
 			type: ["Breakfast","American"],
 			comments:"Great Food",
 			url:"www.bluemoonbaltimore.com",
+			location: {lat: 39.283394, lng: -76.594241},
 			lat: 39.283394,
 			lng: -76.594241
 		},
@@ -253,6 +274,7 @@ var model = {
 			type: ["Southern","Breakfast","American"],
 			comments:"Great Food",
 			url:"www.ironroosterallday.com",
+			location: {lat: 39.276453, lng: -76.565328},
 			lat: 39.276453,
 			lng: -76.565328
 		}
@@ -286,14 +308,38 @@ var ViewModel = function(){
 	 this.setRestaurant = function(place){
 			self.currentRestaurant(place);
 			console.log(self.currentRestaurant().name());
+			//call closeNav()
+			//animate the marker
+			//display the place's information
 	 };
 
 };
 
 
+// function setMarkers(location) {
+    
+//     for(i=0; i<location.length; i++) {
+//         location[i].holdMarker = new google.maps.Marker({
+//           position: new google.maps.LatLng(location[i].lat, location[i].lng),
+//           map: map,
+//           title: location[i].title,
+//           // icon: {
+//           //   url: 'img/marker.png',
+//           //   size: new google.maps.Size(25, 40),
+//           //   origin: new google.maps.Point(0, 0),
+//           //   anchor: new google.maps.Point(12.5, 40)
+//           //   },
+//           // shape: {
+//           //   coords: [1,25,-40,-25,1],
+//           //   type: 'poly'
+//           }  
+//         });
+
+
 function initMap(){
 
 	// styles reference: https://snazzymaps.com/style/38/shades-of-grey
+	// modified the colors slightly to go with my design
 
 	var styles = [
 		{
@@ -466,12 +512,30 @@ function initMap(){
 		styles: styles,
 		mapTypeControl: false
 	});
-	// var lees = {lat: 39.28242, lng:-76.575708};
-			// var marker = new google.maps.Marker({
-			// 	position: lees,
-			// 	map: map,
-			// 	title: "Lee's Pint & Shell"
-			// });
+
+
+    for(i=0; i < model.restaurants.length; i++) {
+
+    	var position = model.restaurants[i].location;
+    	var name = model.restaurants[i].name;
+    	var marker = new google.maps.Marker({
+    		map: map,
+    		position: position,
+    		title: name,
+    		animation: google.maps.Animation.DROP,
+    		id: i
+    	});
+
+    }	
+          // icon: {
+          //   url: 'img/marker.png',
+          //   size: new google.maps.Size(25, 40),
+          //   origin: new google.maps.Point(0, 0),
+          //   anchor: new google.maps.Point(12.5, 40)
+          //   },
+     
+
+  
 			// var infowindow = new google.maps.InfoWindow({
 			// 	content: "Lee's pint and shell"
 			// });
@@ -479,6 +543,6 @@ function initMap(){
 			// marker.addListener('click', function(){
 			// 	infowindow.open(map, marker)
 			// });
-		}
+};
 
 ko.applyBindings(new ViewModel());
