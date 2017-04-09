@@ -13,6 +13,11 @@ body {
 .search-bar {
     margin: 20px 0 5px 0;
 }
+
+.menu-item {
+    display: inline;
+}
+
 #map,
 #marker-info {
     min-height: 600px;
@@ -52,6 +57,21 @@ div .marker-parent {
 
 .search-bar {
     height: 34px;
+}
+
+.marker {
+    color: #000;
+}
+
+
+.btn-circle {
+  width: 70px;
+  height: 70px;
+  background-color: #6591BB;
+  padding: 10px 16px;
+  font-size: 18px;
+  line-height: 1.33;
+  border-radius: 35px;
 }
 
 /* The side navigation menu */
@@ -98,6 +118,7 @@ div .marker-parent {
     font-size: 36px;
     margin-left: 50px;
 }
+
 
 /* Footer: Social Media Section */
 

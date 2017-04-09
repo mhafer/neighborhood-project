@@ -1,5 +1,6 @@
 var map;
 var markersArray = [];
+var showMarkers = true;
 
 openNav();
 
@@ -315,27 +316,6 @@ var ViewModel = function(){
 
 };
 
-
-// function setMarkers(location) {
-    
-//     for(i=0; i<location.length; i++) {
-//         location[i].holdMarker = new google.maps.Marker({
-//           position: new google.maps.LatLng(location[i].lat, location[i].lng),
-//           map: map,
-//           title: location[i].title,
-//           // icon: {
-//           //   url: 'img/marker.png',
-//           //   size: new google.maps.Size(25, 40),
-//           //   origin: new google.maps.Point(0, 0),
-//           //   anchor: new google.maps.Point(12.5, 40)
-//           //   },
-//           // shape: {
-//           //   coords: [1,25,-40,-25,1],
-//           //   type: 'poly'
-//           }  
-//         });
-
-
 function initMap(){
 
 	// styles reference: https://snazzymaps.com/style/38/shades-of-grey
@@ -513,36 +493,65 @@ function initMap(){
 		mapTypeControl: false
 	});
 
+	var largeInfoWindow = new google.maps.InfoWindow();
+	var bounds = new google.maps.LatLngBounds();
 
     for(i=0; i < model.restaurants.length; i++) {
 
     	var position = model.restaurants[i].location;
-    	var name = model.restaurants[i].name;
+    	var title = model.restaurants[i].name;
     	var marker = new google.maps.Marker({
-    		map: map,
     		position: position,
-    		title: name,
+    		title: title,
     		animation: google.maps.Animation.DROP,
     		id: i
     	});
+			bounds.extend(marker.position);
+			markersArray.push(marker);
 
-    }	
-          // icon: {
-          //   url: 'img/marker.png',
-          //   size: new google.maps.Size(25, 40),
-          //   origin: new google.maps.Point(0, 0),
-          //   anchor: new google.maps.Point(12.5, 40)
-          //   },
-     
+			marker.addListener('click', function(){
+				populateInfoWindow(this, largeInfoWindow);
+			});
+    }
 
-  
-			// var infowindow = new google.maps.InfoWindow({
-			// 	content: "Lee's pint and shell"
-			// });
+    function populateInfoWindow(marker, infowindow){
+    	if(infowindow.marker != marker){
+    		infowindow.marker = marker;
+    		infowindow.setContent('<div class="marker">' + marker.title + '</div>');
+    		infowindow.open(map, marker);
+    		//make sure the marker property is cleared if the inforwindow is closed
+    		infowindow.addListener('closeclick', function(){
+    			infowindow.setMarker(null);
+    		});
+    	}
+    }
 
-			// marker.addListener('click', function(){
-			// 	infowindow.open(map, marker)
-			// });
+    toggleMarkers();	
+
 };
+
+function toggleMarkers(){
+
+	if(showMarkers){
+		var bounds = new google.maps.LatLngBounds();
+		for(var i = 0; i < markersArray.length; i++){
+			markersArray[i].setMap(map);
+			markersArray[i].setAnimation(google.maps.Animation.DROP);
+			bounds.extend(markersArray[i].position);	
+		}
+		map.fitBounds(bounds);
+		document.getElementById("btnIcon").className = "glyphicon glyphicon-remove";
+		document.getElementById("toggleBtn").title = "Hide Markers";
+		showMarkers = false;
+	} else{
+		for(var i = 0; i < markersArray.length; i++){
+			markersArray[i].setMap(null);
+		}
+		document.getElementById("btnIcon").className = "glyphicon glyphicon-ok";
+		document.getElementById("toggleBtn").title = "Show Markers";
+		showMarkers = true;
+	}
+
+}
 
 ko.applyBindings(new ViewModel());
