@@ -309,18 +309,25 @@ var ViewModel = function(){
 	 this.setRestaurant = function(place){
 			self.currentRestaurant(place);
 			console.log(self.currentRestaurant().name());
-			//call closeNav()
-			//animate the marker
-			//display the place's information
+			document.getElementById("title").innerHTML = self.currentRestaurant().name();
+			document.getElementById("address").innerHTML = self.currentRestaurant().street() + "<br>" + self.currentRestaurant().city();
+			document.getElementById("comments").innerHTML = self.currentRestaurant().comments();
+			//closeNav();
+			//bounce marker();
 	 };
 
 };
+
+function showPlaceInfo(clickedPlace){
+
+	document.getElementById("title").text = clickedPlace.name();
+
+}
 
 function initMap(){
 
 	// styles reference: https://snazzymaps.com/style/38/shades-of-grey
 	// modified the colors slightly to go with my design
-
 	var styles = [
 		{
 		    "featureType": "all",
@@ -498,32 +505,42 @@ function initMap(){
 
     for(i=0; i < model.restaurants.length; i++) {
 
+    	var content = model.restaurants[i].url;
+
     	var position = model.restaurants[i].location;
     	var title = model.restaurants[i].name;
+    	var street = model.restaurants[i].street;
+    	var city = model.restaurants[i].city;
     	var marker = new google.maps.Marker({
     		position: position,
     		title: title,
     		animation: google.maps.Animation.DROP,
     		id: i
-    	});
-			bounds.extend(marker.position);
-			markersArray.push(marker);
+    	});	
+		
+		bounds.extend(marker.position);
+		markersArray.push(marker);
+		marker.addListener('click', function(){
+			populateInfoWindow(this, largeInfoWindow, content);
+			
 
-			marker.addListener('click', function(){
-				populateInfoWindow(this, largeInfoWindow);
-			});
+		});
     }
 
-    function populateInfoWindow(marker, infowindow){
+    function populateInfoWindow(marker, infowindow, c){
     	if(infowindow.marker != marker){
     		infowindow.marker = marker;
     		infowindow.setContent('<div class="marker">' + marker.title + '</div>');
     		infowindow.open(map, marker);
+    		document.getElementById("title").innerHTML = model.restaurants[marker.id].name;
+			document.getElementById("address").innerHTML = model.restaurants[marker.id].street + "<br>" + model.restaurants[marker.id].city;
+			document.getElementById("comments").innerHTML = model.restaurants[marker.id].comments;
     		//make sure the marker property is cleared if the inforwindow is closed
     		infowindow.addListener('closeclick', function(){
     			infowindow.setMarker(null);
     		});
     	}
+    	
     }
 
     toggleMarkers();	
