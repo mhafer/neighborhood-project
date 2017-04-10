@@ -45,6 +45,11 @@ div .marker-parent {
     font-size: 30px;
 }
 
+#pano {
+   width: 200px;
+   height: 200px;
+}
+
 /*---shadow box for around orange display case---*/
 
 /*---found on csstricks.com---*/
@@ -107,6 +112,7 @@ div .marker-parent {
 /* When you mouse over the navigation links, change their color */
 .sidenav li:hover,
 .offcanvas li:focus {
+    cursor: pointer;
     color: #ff8c00;
 }
 /* Position and style the close button (top right corner) */

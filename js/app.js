@@ -2,6 +2,7 @@ var map;
 var markersArray = [];
 var showMarkers = true;
 
+
 openNav();
 
 /* Set the width of the side navigation to 250px */
@@ -45,8 +46,7 @@ var model = {
 			comments:"Great Food",
 			url:"www.leespintandshell.com",
 			location: {lat:39.282347, lng:-76.575689},
-			lat:39.282347,
-			lng:-76.575689
+			index: 0
 		},
 		{
 			name:"Sip & Bite",
@@ -56,8 +56,7 @@ var model = {
 			comments:"Great Food",
 			url:"www.sipandbite.com",
 			location:{lat:39.283959, lng:-76.585578},
-			lat:39.283959,
-			lng:-76.585578
+			index: 1
 		},
 		{
 			name:"Fork & Wrench",
@@ -67,8 +66,7 @@ var model = {
 			comments:"Great Food",
 			url:"www.theforkandwrench.com",
 			location:{lat: 39.282901, lng: -76.583881},
-			lat: 39.282901,
-			lng: -76.583881
+			index: 2
 		},
 		{
 			name:"Dangerously Delicious",
@@ -78,8 +76,7 @@ var model = {
 			comments:"Great Food",
 			url:"dangerouspiesbalt.com",
 			location: {lat: 39.279923, lng: -76.575537},
-			lat: 39.279923,
-			lng: -76.575537
+			index: 3
 		},
 		{
 			name:"DiPasquales",
@@ -89,8 +86,7 @@ var model = {
 			comments:"Great Food",
 			url:"www.dipasquales.com",
 			location: {lat: 39.288904, lng: -76.566489},
-			lat: 39.288904,
-			lng: -76.566489
+			index: 4
 		},
 		{
 			name:"The Boathouse Canton",
@@ -100,8 +96,7 @@ var model = {
 			comments:"Great Food",
 			url:"www.boathousecanton.com",
 			location: {lat: 39.276836, lng: -76.576378},
-			lat: 39.276836,
-			lng: -76.576378
+			index: 5
 		},
 			{
 			name:"Cask & Grain",
@@ -111,19 +106,7 @@ var model = {
 			comments:"Great Food",
 			url:"caskandgrainkitchen.com",
 			location: {lat: 39.279865, lng: -76.575957},
-			lat: 39.279865,
-			lng: -76.575957
-		},
-		{
-			name:"Woodberry Kitchen",
-			street:"2010 Clipper Park Rd",
-			city:"Baltimore, MD",
-			type: ["American","Fine Dining"],
-			comments:"Great Food",
-			url:"www.woodberrykitchen.com",
-			location: {lat: 39.332001, lng: -76.64568},
-			lat: 39.332001,
-			lng: -76.64568
+			index: 6
 		},
 		{
 			name:"Ra Sushi",
@@ -133,8 +116,7 @@ var model = {
 			comments:"Great Food",
 			url:"www.rasushi.com",
 			location: {lat: 39.282465, lng: -76.597435},
-			lat: 39.282465,
-			lng: -76.597435
+			index: 7
 		},
 		{
 			name:"Ekiben",
@@ -144,8 +126,7 @@ var model = {
 			comments:"Great Food",
 			url:"ekibenbaltimore.com",
 			location: {lat: 39.285737, lng: -76.594554},
-			lat: 39.285737,
-			lng: -76.594554
+			index: 8
 		},
 		{
 			name:"Southern Provisions",
@@ -155,8 +136,7 @@ var model = {
 			comments:"Great Food",
 			url:"southern-provisions.com",
 			location: {lat: 39.28056, lng: -76.573867},
-			lat: 39.28056,
-			lng: -76.573867
+			index: 9
 		},
 		{
 			name:"Verde",
@@ -166,8 +146,7 @@ var model = {
 			comments:"Great Food",
 			url:"www.verdepizza.com",
 			location: {lat: 39.284113, lng: -76.582571},
-			lat: 39.284113,
-			lng: -76.582571
+			index: 10
 		},
 		{
 			name:"HomeSlyce Canton",
@@ -177,8 +156,7 @@ var model = {
 			comments:"Great Food",
 			url:"www.homeslyce.com",
 			location: {lat: 39.2820, lng: -76.577158},
-			lat: 39.2820,
-			lng: -76.577158
+			index: 11
 		},
 		{
 			name:"Smaltimore",
@@ -188,8 +166,7 @@ var model = {
 			comments:"Great Food",
 			url:"smaltimorebaltimore.com",
 			location: {lat: 39.283255, lng: -76.58041},
-			lat: 39.283255,
-			lng: -76.58041
+			index: 12
 		},
 		{
 			name:"Hudson Street Stack house",
@@ -199,8 +176,7 @@ var model = {
 			comments:"Great Food",
 			url:"www.hudsonstreetstackhouse.com",
 			location: {lat: 39.282294, lng: -76.578838},
-			lat: 39.282294,
-			lng: -76.578838
+			index: 13
 		},
 		{
 			name:"Kooper's Tavern",
@@ -210,8 +186,7 @@ var model = {
 			comments:"Great Food",
 			url:"www.kooperstavern.com",
 			location: {lat: 39.282027, lng: -76.592431},
-			lat: 39.282027,
-			lng: -76.592431
+			index: 14
 		},
 		{
 			name:"The Abbey Burger Bistro",
@@ -221,8 +196,7 @@ var model = {
 			comments:"Great Food",
 			url:"www.abbeyburgerbistro.com",
 			location: {lat: 39.282204, lng: -76.592697},
-			lat: 39.282204,
-			lng: -76.592697
+			index: 15
 		},
 		{
 			name:"Shiso Tavern",
@@ -232,8 +206,7 @@ var model = {
 			comments:"Great Food",
 			url:"http://www.shisotavern.com",
 			location: {lat: 39.279923, lng: -76.574212},
-			lat: 39.279923,
-			lng: -76.574212
+			index: 16
 		},
 		{
 			name:"Jasa Kabob",
@@ -243,8 +216,7 @@ var model = {
 			comments:"Great Food",
 			url:"www.jasakabob.com",
 			location: {lat: 39.279906, lng: -76.574872},
-			lat: 39.279906,
-			lng: -76.574872
+			index: 17
 		},
 		{
 			name:"Saigon Today",
@@ -254,8 +226,7 @@ var model = {
 			comments:"Great Food",
 			url:"saigontodaybmore.com",
 			location: {lat: 39.284189, lng: -76.574399},
-			lat: 39.284189,
-			lng: -76.574399
+			index: 18
 		},
 		{
 			name:"Blue Moon Cafe",
@@ -265,8 +236,7 @@ var model = {
 			comments:"Great Food",
 			url:"www.bluemoonbaltimore.com",
 			location: {lat: 39.283394, lng: -76.594241},
-			lat: 39.283394,
-			lng: -76.594241
+			index: 19
 		},
 		{
 			name:"Iron Rooster",
@@ -276,8 +246,7 @@ var model = {
 			comments:"Great Food",
 			url:"www.ironroosterallday.com",
 			location: {lat: 39.276453, lng: -76.565328},
-			lat: 39.276453,
-			lng: -76.565328
+			index: 20
 		}
 	]
 };
@@ -290,9 +259,11 @@ var Restaurant = function(data){
 	this.type = ko.observableArray(data.type);
 	this.comments = ko.observable(data.comments);
 	this.url = ko.observable(data.url);
-	this.lat = ko.observable(data.lat);
-	this.lng = ko.observable(data.lng);
+	this.location = ko.observable(data.location);
+	this.index = data.index;
+
 };
+
 
 var ViewModel = function(){
 
@@ -308,21 +279,15 @@ var ViewModel = function(){
 
 	 this.setRestaurant = function(place){
 			self.currentRestaurant(place);
-			console.log(self.currentRestaurant().name());
+			console.log(place.index);
 			document.getElementById("title").innerHTML = self.currentRestaurant().name();
 			document.getElementById("address").innerHTML = self.currentRestaurant().street() + "<br>" + self.currentRestaurant().city();
 			document.getElementById("comments").innerHTML = self.currentRestaurant().comments();
-			//closeNav();
-			//bounce marker();
+			toggleBounce(markersArray[place.index]);
+			
 	 };
 
 };
-
-function showPlaceInfo(clickedPlace){
-
-	document.getElementById("title").text = clickedPlace.name();
-
-}
 
 function initMap(){
 
@@ -503,7 +468,7 @@ function initMap(){
 	var largeInfoWindow = new google.maps.InfoWindow();
 	var bounds = new google.maps.LatLngBounds();
 
-    for(i=0; i < model.restaurants.length; i++) {
+    for(var i=0; i < model.restaurants.length; i++) {
 
     	var content = model.restaurants[i].url;
 
@@ -514,31 +479,60 @@ function initMap(){
     	var marker = new google.maps.Marker({
     		position: position,
     		title: title,
+    		icon: {url: 'img/pin-sm.png'},
     		animation: google.maps.Animation.DROP,
     		id: i
     	});	
-		
+
 		bounds.extend(marker.position);
 		markersArray.push(marker);
 		marker.addListener('click', function(){
-			populateInfoWindow(this, largeInfoWindow, content);
-			
-
+			toggleBounce(this);
+			populateInfoWindow(this, largeInfoWindow);		
 		});
     }
 
-    function populateInfoWindow(marker, infowindow, c){
+    function populateInfoWindow(marker, infowindow){
     	if(infowindow.marker != marker){
+    		infowindow.setContent('');
     		infowindow.marker = marker;
-    		infowindow.setContent('<div class="marker">' + marker.title + '</div>');
-    		infowindow.open(map, marker);
+
+    		//populate the orange block
     		document.getElementById("title").innerHTML = model.restaurants[marker.id].name;
 			document.getElementById("address").innerHTML = model.restaurants[marker.id].street + "<br>" + model.restaurants[marker.id].city;
 			document.getElementById("comments").innerHTML = model.restaurants[marker.id].comments;
+
     		//make sure the marker property is cleared if the inforwindow is closed
     		infowindow.addListener('closeclick', function(){
-    			infowindow.setMarker(null);
+    			infowindow.marker = null;
     		});
+
+    		//get google street view
+    		var streetViewService = new google.maps.StreetViewService();
+    		var radius = 30;
+
+    		streetViewService.getPanoramaByLocation(marker.position, radius, getStreetView);
+    		
+
+    		function getStreetView(data, status){
+    			if(status == google.maps.StreetViewStatus.OK) {
+    				var nearStreetViewLocation = data.location.latLng;
+    				var heading = google.maps.geometry.spherical.computeHeading(nearStreetViewLocation, marker.position);
+    				infowindow.setContent('<div class="marker">' + marker.title + '<div id="pano"></div></div>');
+    				var panoramaOptions = {
+    					position: nearStreetViewLocation,
+    					pov:{
+    						heading: heading,
+    						pitch: 20
+    					}
+    				};
+    				var panorama = new google.maps.StreetViewPanorama(document.getElementById('pano'), panoramaOptions);
+    			} else {
+    				infowindow.setContent('<div class="marker">' + marker.title + '<br>No Street View Found</div>');
+    			}
+    		}
+
+    		infowindow.open(map,marker);
     	}
     	
     }
@@ -570,5 +564,19 @@ function toggleMarkers(){
 	}
 
 }
+
+ function toggleBounce(marker) {
+      
+	if (marker.getAnimation() !== null) {
+          marker.setAnimation(null);
+    } else {
+      	  marker.setAnimation(google.maps.Animation.BOUNCE);
+    }  
+
+	         
+  	setTimeout(function(){ 
+  		marker.setAnimation(null);   
+  	}, 2100);
+}	       
 
 ko.applyBindings(new ViewModel());
