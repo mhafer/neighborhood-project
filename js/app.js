@@ -2,9 +2,6 @@ var map;
 var markersArray = [];
 var showMarkers = true;
 
-
-openNav();
-
 /* Set the width of the side navigation to 250px */
 function openNav() {
     var nav = document.getElementById("mySidenav");
@@ -20,12 +17,8 @@ function openNav() {
     }else{
         nav.style.width = "90%";
     }
-
     var height = $('.map-parent').height();
-
     nav.style.height = (height - 20) + "px";
-
-    //console.log();
 }
 
 
@@ -33,6 +26,7 @@ function openNav() {
 function closeNav() {
     document.getElementById("mySidenav").style.width = "0";
 }
+
 
 
 var model = {
@@ -251,6 +245,7 @@ var model = {
 	]
 };
 
+
 var Restaurant = function(data){
 
 	this.name = ko.observable(data.name);
@@ -275,11 +270,12 @@ var ViewModel = function(){
  		self.restaurantList.push(new Restaurant(place));
  	});
 
+
     this.currentRestaurant = ko.observable(this.restaurantList[0]);
 
 	 this.setRestaurant = function(place){
 			self.currentRestaurant(place);
-			console.log(place.index);
+			//console.log(place.index);
 			document.getElementById("title").innerHTML = self.currentRestaurant().name();
 			document.getElementById("address").innerHTML = self.currentRestaurant().street() + "<br>" + self.currentRestaurant().city();
 			document.getElementById("comments").innerHTML = self.currentRestaurant().comments();
@@ -287,7 +283,34 @@ var ViewModel = function(){
 			
 	 };
 
-};
+	self.searchKey = ko.observable('');
+
+    self.filteredLocations = ko.computed(function() {
+     	
+     	if(self.searchKey !== ''){
+     	
+     		var filter = self.searchKey().toLowerCase();
+
+		    model.restaurants.forEach(function(place){
+		         	if(place.name.toLowerCase() === filter){
+		        		model.restaurants.forEach(function(obj){
+		        			self.restaurantList.pop(obj);
+		        		});
+		         		self.restaurantList.push(new Restaurant(place));
+		         	} 
+		 		
+		 	});
+		 	
+     	} else {
+     			//show all?
+
+     	} 
+
+     	
+      	 
+	});
+
+}
 
 function initMap(){
 
@@ -571,12 +594,12 @@ function toggleMarkers(){
           marker.setAnimation(null);
     } else {
       	  marker.setAnimation(google.maps.Animation.BOUNCE);
-    }  
-
-	         
+    }  	         
   	setTimeout(function(){ 
   		marker.setAnimation(null);   
   	}, 2100);
-}	       
+}
 
+
+openNav();      
 ko.applyBindings(new ViewModel());

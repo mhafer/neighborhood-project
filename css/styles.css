@@ -174,7 +174,7 @@ footer h2 {
 
 /*-- Modified by me to fit my design--*/
 
-.search-form .form-group {
+.form-group {
     float: right !important;
     transition: all 0.35s, border-radius 0s;
     width: 100%;
@@ -184,37 +184,37 @@ footer h2 {
     border-radius: 25px;
     border: 1px solid #ccc;
 }
-.search-form .form-group input.form-control {
+.form-group input.form-control {
     padding-right: 20px;
     border: 0 none;
     background: transparent;
     box-shadow: none;
     display: block;
 }
-.search-form .form-group input.form-control::-webkit-input-placeholder {
+.form-group input.form-control::-webkit-input-placeholder {
     display: none;
 }
-.search-form .form-group input.form-control:-moz-placeholder {
-    /* Firefox 18- */
+/*.search-form .form-group input.form-control:-moz-placeholder {
+  
     
     display: none;
 }
 .search-form .form-group input.form-control::-moz-placeholder {
-    /* Firefox 19+ */
+  
     
     display: none;
-}
-.search-form .form-group input.form-control:-ms-input-placeholder {
+}*/
+.form-group input.form-control:-ms-input-placeholder {
     display: none;
 }
-.search-form .form-group:hover,
-.search-form .form-group.hover {
+.form-group:hover,
+.form-group.hover {
     border-radius: 4px 25px 25px 4px;
 }
-.search-form .form-group span.form-control-feedback {
+.form-group span.form-control-feedback {
     position: absolute;
-    top: -1px;
-    right: -2px;
+    top: 1px;
+    right: 15px;
     z-index: 2;
     display: block;
     width: 34px;

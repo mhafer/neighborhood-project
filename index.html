@@ -22,10 +22,10 @@
                 <span class="glyphicon glyphicon-list" onclick="openNav()" style="color: #fff;"></span>
             </div>
             <div class="col-xs-10 col-sm-11 col-md-11 col-lg-11 float-right">
-                <form action="" class="search-form">
-                    <div class="form-group has-feedback">
-                        <label for="search" class="sr-only">Search by name or type 'sushi' or 'american'</label>
-                        <input type="text" class="form-control" name="search" id="search" placeholder="search">
+                <form>
+                    <div class="form-group">
+                        <label for="search" class="sr-only"></label>
+                        <input  type="input" class="form-control" data-bind="value: searchKey, valueUpdate: 'afterkeydown'" >
                         <span class="glyphicon glyphicon-search form-control-feedback"></span>
                     </div>
                 </form>
