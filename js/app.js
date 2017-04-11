@@ -264,30 +264,30 @@ var ViewModel = function(){
 
  	var self = this;
  	this.restaurantList = ko.observableArray([]);
- 	this.searchKey = ko.observable('');
- 	var filter = self.searchKey().toLowerCase();
+ 	this.filter = ko.observable('');
+ 	
 
- 	this.filteredList = ko.computed(function() {
+ 	//create the restaurantList object
+     model.restaurants.forEach(function(place){
+ 		    self.restaurantList.push(new Restaurant(place));
+ 	 });
 
- 		model.restaurants.forEach(function(place){
- 			var filter = self.searchKey().toLowerCase();
- 			if(filter === place.name.toLowerCase()){
- 				//if the name matched then add that place to the list
- 			 	self.restaurantList.push(new Restaurant(place));
- 			} else {
- 				//if no name matched then add all the rest
- 				self.restaurantList.push(new Restaurant(place));
- 			}
-	
- 		});
+ 	 this.filteredList = ko.computed(function() {
+ 	 		var filter = this.filter().toLowerCase();
+ 	 		console.log(filter);
+  	 				if(!filter){
+  	 					console.log("no filter");
+  	 					return self.restaurantList();
+  	 				}else{
+  	 					console.log("EUREKA");
+  	 					//if there is a filter, then filter the restaurantList observableArray and return a matching subset
+  	 					return ko.utils.arrayFilter(self.restaurantList(), function(item){
+  	 						console.log("almost there");
+  	 						return ko.utils.stringStartsWith(item.name().toLowerCase(), filter);
+  	 					});
+  	 				}
+ 	 		}, self);
 
- 		return self.restaurantList;
-     	
-    });
-
-    //  model.restaurants.forEach(function(place){
- 	// 	    self.restaurantList.push(new Restaurant(place));
- 	//  });
 
     this.currentRestaurant = ko.observable(this.restaurantList[0]);
 

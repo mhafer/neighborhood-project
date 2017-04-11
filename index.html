@@ -25,7 +25,7 @@
                 <form>
                     <div class="form-group">
                         <label for="search" class="sr-only"></label>
-                        <input  type="input" class="form-control" data-bind="value: searchKey, valueUpdate: 'afterkeydown'" >
+                        <input  type="input" class="form-control" data-bind="value: filter, valueUpdate: 'afterkeydown'" >
                         <span class="glyphicon glyphicon-search form-control-feedback"></span>
                     </div>
                 </form>
@@ -35,7 +35,7 @@
             <div class="col-sm-8 col-md-9 col-lg-9 col-xl-10 map-parent">
                 <div id="mySidenav" class="sidenav">
                     <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-                    <ul data-bind="foreach: restaurantList">
+                    <ul data-bind="foreach: filteredList">
                         <li data-bind="text: name, click: $parent.setRestaurant"></li>
                     </ul>
                 </div>
