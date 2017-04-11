@@ -263,17 +263,35 @@ var Restaurant = function(data){
 var ViewModel = function(){
 
  	var self = this;
-
  	this.restaurantList = ko.observableArray([]);
+ 	this.searchKey = ko.observable('');
+ 	var filter = self.searchKey().toLowerCase();
 
- 	model.restaurants.forEach(function(place){
- 		self.restaurantList.push(new Restaurant(place));
- 	});
+ 	this.filteredList = ko.computed(function() {
 
+ 		model.restaurants.forEach(function(place){
+ 			var filter = self.searchKey().toLowerCase();
+ 			if(filter === place.name.toLowerCase()){
+ 				//if the name matched then add that place to the list
+ 			 	self.restaurantList.push(new Restaurant(place));
+ 			} else {
+ 				//if no name matched then add all the rest
+ 				self.restaurantList.push(new Restaurant(place));
+ 			}
+	
+ 		});
+
+ 		return self.restaurantList;
+     	
+    });
+
+    //  model.restaurants.forEach(function(place){
+ 	// 	    self.restaurantList.push(new Restaurant(place));
+ 	//  });
 
     this.currentRestaurant = ko.observable(this.restaurantList[0]);
 
-	 this.setRestaurant = function(place){
+	this.setRestaurant = function(place){
 			self.currentRestaurant(place);
 			//console.log(place.index);
 			document.getElementById("title").innerHTML = self.currentRestaurant().name();
@@ -283,34 +301,7 @@ var ViewModel = function(){
 			
 	 };
 
-	self.searchKey = ko.observable('');
-
-    self.filteredLocations = ko.computed(function() {
-     	
-     	if(self.searchKey !== ''){
-     	
-     		var filter = self.searchKey().toLowerCase();
-
-		    model.restaurants.forEach(function(place){
-		         	if(place.name.toLowerCase() === filter){
-		        		model.restaurants.forEach(function(obj){
-		        			self.restaurantList.pop(obj);
-		        		});
-		         		self.restaurantList.push(new Restaurant(place));
-		         	} 
-		 		
-		 	});
-		 	
-     	} else {
-     			//show all?
-
-     	} 
-
-     	
-      	 
-	});
-
-}
+};
 
 function initMap(){
 
