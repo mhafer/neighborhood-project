@@ -266,7 +266,6 @@ var ViewModel = function(){
  	this.restaurantList = ko.observableArray([]);
  	this.filter = ko.observable('');
  	
-
  	//create the restaurantList object
      model.restaurants.forEach(function(place){
  		    self.restaurantList.push(new Restaurant(place));
@@ -274,16 +273,12 @@ var ViewModel = function(){
 
  	 this.filteredList = ko.computed(function() {
  	 		var filter = this.filter().toLowerCase();
- 	 		console.log(filter);
+ 	 		// console.log(filter);
   	 				if(!filter){
-  	 					console.log("no filter");
   	 					return self.restaurantList();
-  	 				}else{
-  	 					console.log("EUREKA");
-  	 					//if there is a filter, then filter the restaurantList observableArray and return a matching subset
+  	 				}else{	 				
   	 					return ko.utils.arrayFilter(self.restaurantList(), function(item){
-  	 						console.log("almost there");
-  	 						return ko.utils.stringStartsWith(item.name().toLowerCase(), filter);
+  	 						return stringStartsWith(item.name().toLowerCase(), filter);
   	 					});
   	 				}
  	 		}, self);
@@ -293,14 +288,25 @@ var ViewModel = function(){
 
 	this.setRestaurant = function(place){
 			self.currentRestaurant(place);
-			//console.log(place.index);
 			document.getElementById("title").innerHTML = self.currentRestaurant().name();
+			var el = document.getElementById("website");
+			el.setAttribute("href", self.currentRestaurant().url());
 			document.getElementById("address").innerHTML = self.currentRestaurant().street() + "<br>" + self.currentRestaurant().city();
 			document.getElementById("comments").innerHTML = self.currentRestaurant().comments();
 			toggleBounce(markersArray[place.index]);
 			
 	 };
 
+};
+
+//knockout.js removed their stringStartsWith method, this solution to make your own I found on stackoverflow
+//http://stackoverflow.com/questions/28042344/filter-using-knockoutjs
+//it was simple and worked well so I decided to keep it
+var stringStartsWith = function (string, startsWith) {          
+    string = string || "";
+    if (startsWith.length > string.length)
+        return false;
+    return string.substring(0, startsWith.length) === startsWith;
 };
 
 function initMap(){
