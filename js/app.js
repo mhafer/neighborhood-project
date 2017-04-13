@@ -38,7 +38,7 @@ var model = {
 			city:"Baltimore, MD",
 			type: ["Pub", "Bar", "Seafood"],
 			comments:"Great Food",
-			url:"www.leespintandshell.com",
+			url:"http://www.leespintandshell.com",
 			location: {lat:39.282347, lng:-76.575689},
 			index: 0
 		},
@@ -508,9 +508,32 @@ function initMap(){
 		markersArray.push(marker);
 		marker.addListener('click', function(){
 			toggleBounce(this);
+			zoomToArea(this);
 			populateInfoWindow(this, largeInfoWindow);		
 		});
     }
+
+    function zoomToArea(marker) {
+    	var geocoder = new google.maps.Geocoder();
+    	var address = marker.street;
+
+    	if(address == ''){
+    		window.alert('Can\'t zoom to address');
+    	} else {
+    		geocoder.geocode({
+    			address: address,
+    			componentRestrictions: {locality: 'Baltimore'}
+    		}, function(results, status){
+    			if(status == google.maps.GeocoderStatus.OK){
+    				map.setCenter(results[0].geometry.location);
+    				map.setZoom(15)
+    			} else {
+    				window.alert('Could not find that location');
+    			}
+    		});
+    	}
+    }
+
 
     function populateInfoWindow(marker, infowindow){
     	if(infowindow.marker != marker){
@@ -596,6 +619,8 @@ function toggleMarkers(){
   		marker.setAnimation(null);   
   	}, 2100);
 }
+
+
 
 
 openNav();      
