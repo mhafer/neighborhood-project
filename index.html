@@ -3,13 +3,12 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Google Maps</title>
+    <title>Baltimore Food Map</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
     <meta name="mobile-web-app-capable" content="yes">
     <!--  google fonts -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:100,300|Pacifico">
-    <link href="https://fonts.googleapis.com/css?family=Palanquin" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:100,300%7CPacifico%7CPalanquin">
     <!-- icon font awesome -->
     <link rel="stylesheet" href="http://weloveiconfonts.com/api/?family=fontawesome">
 </head>
@@ -24,15 +23,15 @@
             <div class="col-xs-10 col-sm-11 col-md-11 col-lg-11 float-right">
                 <form>
                     <div class="form-group">
-                        <label for="search" class="sr-only"></label>
-                        <input  type="input" class="form-control" data-bind="value: filter, valueUpdate: 'afterkeydown'" placeholder="Type the name of a restaurant" >
+                        <label class="sr-only"></label>
+                        <input type="text" class="form-control" data-bind="value: filter, valueUpdate: 'afterkeydown'" placeholder="Type the name of a restaurant">
                         <span class="glyphicon glyphicon-search form-control-feedback"></span>
                     </div>
                 </form>
             </div>
         </div>
         <div class="row display-area">
-            <div class="col-sm-8 col-md-9 col-lg-9 col-xl-10 map-parent">
+            <div class="col-sm-8 col-md-9 col-lg-9 col-xl-10 map-parent" data-bind="">
                 <div id="mySidenav" class="sidenav">
                     <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
                     <ul data-bind="foreach: filteredList">
@@ -44,11 +43,14 @@
 
             <div class="col-sm-4 col-md-3 col-lg-3 col-xl-10 marker-parent shadow">
                 <div id="marker-info">
-            <button type="button" id="toggleBtn" data-toggle="tooltip" title="Hide Markers" class="btn btn-info btn-circle" onclick="toggleMarkers()"><i id="btnIcon" class="glyphicon glyphicon-remove"></i></button>
-                    <h2 id="title">So, you want to eat?</h2>
-                    <h4><a id="website" href="#" >Check Out the Website</a></h4>
-                    <h3 id="address">Click on the map</h3>
-                    <p id="comments">Find some yummy recommendations!</p>
+                    <button type="button" id="toggleBtn" data-toggle="tooltip" title="Hide Markers" class="btn-circle" onclick="toggleMarkers()"><i id="btnIcon" class="glyphicon glyphicon-remove"></i>
+                    </button>
+                    <div data-bind="with: currentRestaurant">
+                        <h2 id="title" data-bind="text: name"></h2>
+                        <h4><a id="website" data-bind="attr: {href: url}" target="_blank">Check Out the Website</a></h4>
+                        <h3><span id="address" data-bind="text: street"></span>, <span data-bind="text: city"></span></h3>
+                        <p id="comments" data-bind="text: comments"></p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -77,9 +79,9 @@
     <link rel="stylesheet" href="css/styles.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
     <script async defer src="js/bootstrap.min.js"></script>
-    <script src="js/lib/knockout-3.4.2.js"></script>
-    <script async src="js/app.js"></script>
-    <script async src="js/yelp.js"></script>
+    <script async defer src="js/lib/knockout-3.4.2.js"></script>
+    <script async defer src="js/app.js"></script>
     <script async defer src="https://maps.googleapis.com/maps/api/js?libraries=geometry&key=AIzaSyC0TkfOlixEJ_CtnCSIu3eVnt5yUXJuuGE&v=3&callback=initMap"></script>
 </body>
+
 </html>
