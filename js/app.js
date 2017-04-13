@@ -3,11 +3,7 @@ var markersArray = [];
 var showMarkers = true;
 
 // added in order to fix google map error and undefined ko error, needed to load the map then call initMap()
-function loadScript() {
-  var script1 = document.createElement('script');
-  script1.type = 'text/javascript';
-  script1.src = "js/lib/knockout-3.4.2.js";
-  document.body.appendChild(script1);	
+function loadScript() {	
   var script = document.createElement('script');
   script.type = 'text/javascript';
   script.src = "https://maps.googleapis.com/maps/api/js?libraries=geometry&key=AIzaSyC0TkfOlixEJ_CtnCSIu3eVnt5yUXJuuGE&v=3&callback=initMap";
