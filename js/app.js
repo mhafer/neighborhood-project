@@ -2,6 +2,15 @@ var map;
 var markersArray = [];
 var showMarkers = true;
 
+// added in order to fix google map error, needed to load the map then call initMap()
+function loadScript() {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src = "https://maps.googleapis.com/maps/api/js?libraries=geometry&key=AIzaSyC0TkfOlixEJ_CtnCSIu3eVnt5yUXJuuGE&v=3&callback=initMap";
+  document.body.appendChild(script);
+}
+window.onload = loadScript;
+
 /* The navigation window will open once the page loads
  *	Depending on the width of the window then nav's width will display accordingly
  *	It will also get the heigh of it's parent div and calculate to be a bit smaller to fit
