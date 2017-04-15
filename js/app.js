@@ -338,43 +338,32 @@ var ViewModel = function(){
 
 function requestFourSquare(location){
 
-	//////////////////////////////////////////////
-	//FourSquare API Request 
-        var CLIENT_ID = '3IVGPORHDKYSW3UJUI4RXOZASB3Y3ESIDZT4HH4TV3GJ5SPO';
-        var CLIENT_SECRET = 'SCQYO3CFBWVOHBYK4HUMBBXF3VUIF5ETZPD01BXTGBO2YW00';
-        var latlong = location.lat + "," + location.lng;
-        var name = location.name;
-       
-
-        /**********FourSquare***************/
-		$.ajax({
-			url:'https://api.foursquare.com/v2/venues/search',
-			dataType: 'json',
-			data: 'limit=1' +
-					'&ll=' + latlong +
-					'&query=' + name +
-					'&client_id='+ CLIENT_ID +
-					'&client_secret='+ CLIENT_SECRET +
-					'&v=20130815',
-
-			async: true,
-
-			// If data call is successful - check for various properties and assign them to observables
-			success: function (data) {
-				console.log(data);
-			},
-
-			// Alert the user on error
-			error: function (e) {
-				console.log('Foursquare data is unavailable.');
-		
-			}
-		});
-	/////////////////////////////////////////////////
-
+	//FOUR SQUARE
+    var latlong = location.lat + "," + location.lng;
+    var CLIENT_ID = '3IVGPORHDKYSW3UJUI4RXOZASB3Y3ESIDZT4HH4TV3GJ5SPO';
+    var CLIENT_SECRET = 'SCQYO3CFBWVOHBYK4HUMBBXF3VUIF5ETZPD01BXTGBO2YW00';
+    var VERSION = '20170401';
+    //'39.283959,-76.585578'
+    var url = 'https://api.foursquare.com/v2/venues/search';
+      
+        $.ajax({
+          url: url,
+          dataType: 'json',
+          data: {
+          	limit: '1',
+            ll: latlong,
+            client_id: CLIENT_ID,
+            client_secret: CLIENT_SECRET,
+            v: VERSION,
+            async: true
+          },
+          success: function(data) {
+            console.log(data.venues);
+          }
+        }).fail(function (e) {
+          console.log(e);
+        });
 }
-
-
 
 /*
  * 	SETS UP THE INITIAL DISPLAY
