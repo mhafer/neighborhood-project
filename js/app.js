@@ -315,6 +315,7 @@ var ViewModel = function(){
     // when the user clicks a specific restuarant on the list, it will reset the currentRestaurant to the one they selected
 	this.setRestaurant = function(place){
 			self.currentRestaurant(place);
+			requestFourSquare(place.location());
 			toggleBounce(markersArray[place.index]);
 			
 	 };
@@ -330,7 +331,50 @@ var ViewModel = function(){
 	    return string.substring(0, startsWith.length) === startsWith;
 	};
 
+
+
 };
+
+
+function requestFourSquare(location){
+
+	//////////////////////////////////////////////
+	//FourSquare API Request 
+        var CLIENT_ID = '3IVGPORHDKYSW3UJUI4RXOZASB3Y3ESIDZT4HH4TV3GJ5SPO';
+        var CLIENT_SECRET = 'SCQYO3CFBWVOHBYK4HUMBBXF3VUIF5ETZPD01BXTGBO2YW00';
+        var latlong = location.lat + "," + location.lng;
+        var name = location.name;
+       
+
+        /**********FourSquare***************/
+		$.ajax({
+			url:'https://api.foursquare.com/v2/venues/search',
+			dataType: 'json',
+			data: 'limit=1' +
+					'&ll=' + latlong +
+					'&query=' + name +
+					'&client_id='+ CLIENT_ID +
+					'&client_secret='+ CLIENT_SECRET +
+					'&v=20130815',
+
+			async: true,
+
+			// If data call is successful - check for various properties and assign them to observables
+			success: function (data) {
+				console.log(data);
+			},
+
+			// Alert the user on error
+			error: function (e) {
+				console.log('Foursquare data is unavailable.');
+		
+			}
+		});
+	/////////////////////////////////////////////////
+
+}
+
+
 
 /*
  * 	SETS UP THE INITIAL DISPLAY
