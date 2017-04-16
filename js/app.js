@@ -1,32 +1,36 @@
+// global variables
 var map;
 var markersArray = [];
 var showMarkers = true;
 var flag;
+var CLIENT_ID = '3IVGPORHDKYSW3UJUI4RXOZASB3Y3ESIDZT4HH4TV3GJ5SPO';
+var CLIENT_SECRET = '4QCTDJU0DCNE0NF032RKU54WVCG0HHWFUSLBFLE3AKOKLA4U';
+var VERSION = '20170401';
 
-// added in order to fix google map error and undefined ko error, needed to load the map then call initMap()
+// added in order to fix google map error and undefined ko error, needed to load the map in my js file instead of html, then call initMap()
 function loadScript() {	
   var script = document.createElement('script');
   script.type = 'text/javascript';
-  script.src = "https://maps.googleapis.com/maps/api/js?libraries=geometry&key=AIzaSyC0TkfOlixEJ_CtnCSIu3eVnt5yUXJuuGE&v=3&callback=initMap";
+  script.src = "https://maps.googleapis.com/maps/api/js?libraries=geometry&key=AIzaSyC0TkfOlixEJ_CtnCSIu3eVnt5yUXJuuGE&v=3&callback=initMap"; onerror="googleError()";
   document.body.appendChild(script);
 }
+// calls the above function
 window.onload = loadScript;
 
+function googleError(){
+	console.log("error loading map");
+	alert("Sorry, but we are unable to load the map at the moment, please try again later");
+}
 
+// This is a bootstrap implemented sliding carousel
+// documentatoin can be found at http://getbootstrap.com/javascript/#carousel
 $(document).ready(function() {
 	$('#myCarousel').carousel({
 	interval: 10000
-	})
-    
+	}); 
     $('#myCarousel').on('slid.bs.carousel', function() {
-    	//alert("slid");
-	});
-    
-    
+	}); 
 });
-
-
-
 
 /* The navigation window will open once the page loads
  *	Depending on the width of the window then nav's width will display accordingly
@@ -331,6 +335,9 @@ var ViewModel = function(){
     this.currentRestaurant = ko.observable(this.filteredList[0]);
    
     // when the user clicks a specific restuarant on the list, it will reset the currentRestaurant to the one they selected
+    // the intro message will be removed
+    // a request to foursqaure will revieve images of the place
+    // the marker will be animated
 	this.setRestaurant = function(place){
 			$('.intro').remove();
 			self.currentRestaurant(place);
@@ -356,12 +363,10 @@ var ViewModel = function(){
 function requestFourSquare(location){
 
 	//FOUR SQUARE
+	// first convert the place's lat long into usable ll format for request
     var latlong = location.lat + "," + location.lng;
-    var CLIENT_ID = '3IVGPORHDKYSW3UJUI4RXOZASB3Y3ESIDZT4HH4TV3GJ5SPO';
-    var CLIENT_SECRET = '4QCTDJU0DCNE0NF032RKU54WVCG0HHWFUSLBFLE3AKOKLA4U';
-    var VERSION = '20170401';
-    //'39.283959,-76.585578'
     var url = 'https://api.foursquare.com/v2/venues/search';
+    // keep a variable to store the place's id (which is needed to retreive photos)
     var venue_id;
       
         $.ajax({
@@ -376,10 +381,13 @@ function requestFourSquare(location){
             async: true
           },
           success: function(data) {
-          	venue_id = data.response.venues[0].id
+          	// once we get the place we need to store the id in order to get photos
+          	// pass the id into the getPhotos()
+          	venue_id = data.response.venues[0].id;
           	getPhotos(venue_id);
           }
-        }).fail(function (e) {
+        }).fail(function (e) {       
+          alert("Sorry, but we are unable to retrieve photos right now");
           console.log(e);
         });
 
@@ -388,14 +396,14 @@ function requestFourSquare(location){
 
 function getPhotos(id){
 
+	// first, remove any previouse image items
 	$('.item').remove();
+	// this flag will set the class of the first item to 'active'
 	flag = true;
+	// the length will hold the returned value of the number of images, the 'count'
 	var length;
-
-	var CLIENT_ID = '3IVGPORHDKYSW3UJUI4RXOZASB3Y3ESIDZT4HH4TV3GJ5SPO';
-    var CLIENT_SECRET = '4QCTDJU0DCNE0NF032RKU54WVCG0HHWFUSLBFLE3AKOKLA4U';
-    var VERSION = '20170401';
     var image;
+    // variables to store the img urls
     var img_link;
 
 	 $.ajax({
@@ -409,6 +417,7 @@ function getPhotos(id){
           },
           success: function(data) {
             length = data.response.photos.count;
+            // for each retirevied image, loop through and get the url, then pass is to the appendPhotos()
             for(var i = 0; i < length; i++){
             	image = data.response.photos.items[i];
             	img_link = image.prefix+ "height100" + image.suffix;
@@ -416,7 +425,8 @@ function getPhotos(id){
             }
           }
         }).fail(function (e) {
-          console.log(e + "second part");
+          console.log(e);
+          alert("Sorry, but we are unable to retrieve photos right now");
         });
 
 
@@ -425,8 +435,10 @@ function getPhotos(id){
 function appendPhotos(source){
 
 	var element;
+	// we want the image to enlarge when the user clicks so we will assign the href a larger img url
 	var img_href = source.replace("height100","height300");
 
+	// if its the first item, set the class to active
 	if(flag){
 		element = '<div class="item active"><div class="row"><div class="col-sm-12">'+
 		'<a href="' +  img_href  + '" class="thumbnail">'+
@@ -438,7 +450,7 @@ function appendPhotos(source){
 		'<img src="' + source + '" alt="Image" class="img-responsive"></a></div></div></div>';
 	                                        
 	}
-
+	//each new item created will be inserted into our html
     $(element).insertBefore('.insert-photos');                           
                                                                  
 }
@@ -648,9 +660,7 @@ function initMap(){
 			// each marker will have a click listener, which when it is selected will bounce and then display it's street view
 			marker.addListener('click', function(){
 				toggleBounce(this);
-				populateInfoWindow(this, largeInfoWindow);	
-				//ViewModel.setRestaurant(model.restaurants[marker.id]);
-
+				populateInfoWindow(this, largeInfoWindow);				
 			});
 
     }
@@ -684,11 +694,12 @@ function initMap(){
     		var radius = 30;
     		streetViewService.getPanoramaByLocation(marker.position, radius, getStreetView);
     		
-
+				var nearStreetViewLocation;
+        var heading;
     		function getStreetView(data, status){
     			if(status == google.maps.StreetViewStatus.OK) {
-    				var nearStreetViewLocation = data.location.latLng;
-    				var heading = google.maps.geometry.spherical.computeHeading(nearStreetViewLocation, marker.position);
+    				nearStreetViewLocation= data.location.latLng;
+    				heading = google.maps.geometry.spherical.computeHeading(nearStreetViewLocation, marker.position);
     				infowindow.setContent('<div class="marker">' + marker.title + '<div id="pano"></div></div>');
     				var panoramaOptions = {
     					position: nearStreetViewLocation,
