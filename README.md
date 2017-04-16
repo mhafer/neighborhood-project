@@ -14,7 +14,7 @@
 - Udacity FEWD tutorials
 
 ### You can download or clone this repo
-https://github.com/mhafer/neighborhood-project.git
+git clone https://github.com/mhafer/neighborhood-project.git
 
 #### Open it in your browser with Ctrl+O and click on index.html
 
