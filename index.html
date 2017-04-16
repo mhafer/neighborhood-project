@@ -35,7 +35,7 @@
             <div class="col-sm-8 col-md-9 col-lg-9 col-xl-10 map-parent" data-bind="">
                 <div id="mySidenav" class="sidenav">
                     <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-                    <ul data-bind="foreach: filteredList">
+                    <ul class = "listview" data-bind="foreach: filteredList">
                         <li data-bind="text: name, click: $parent.setRestaurant"></li>
                     </ul>
                 </div>
@@ -46,11 +46,28 @@
                 <div id="marker-info">
                     <button type="button" id="toggleBtn" data-toggle="tooltip" title="Hide Markers" class="btn-circle" onclick="toggleMarkers()"><i id="btnIcon" class="glyphicon glyphicon-remove"></i>
                     </button>
+                    <div class="intro">
+                         <h2>So you want to eat?</h2>
+                        <h4>Click on the list to begin searching!</h4>
+                    </div>
                     <div data-bind="with: currentRestaurant">
                         <h2 id="title" data-bind="text: name"></h2>
                         <h4><a id="website" data-bind="attr: {href: url}" target="_blank">Check Out the Website</a></h4>
                         <h3><span id="address" data-bind="text: street"></span>, <span data-bind="text: city"></span></h3>
                         <p id="comments" data-bind="text: comments"></p>
+                    </div>
+
+
+                    <div class="well">
+                        <div id="myCarousel" class="carousel slide">
+                            <!-- Carousel items -->
+                            <div class="carousel-inner">
+                            <a class="insert-photos left carousel-control" href="#myCarousel" data-slide="prev">‹</a>
+                            <a class="right carousel-control" href="#myCarousel" data-slide="next">›</a>
+                            </div>
+                        <!--/myCarousel-->
+                         </div>
+                    <!--/well-->
                     </div>
                 </div>
             </div>

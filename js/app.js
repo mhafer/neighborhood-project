@@ -1,6 +1,7 @@
 var map;
 var markersArray = [];
 var showMarkers = true;
+var flag;
 
 // added in order to fix google map error and undefined ko error, needed to load the map then call initMap()
 function loadScript() {	
@@ -10,6 +11,22 @@ function loadScript() {
   document.body.appendChild(script);
 }
 window.onload = loadScript;
+
+
+$(document).ready(function() {
+	$('#myCarousel').carousel({
+	interval: 10000
+	})
+    
+    $('#myCarousel').on('slid.bs.carousel', function() {
+    	//alert("slid");
+	});
+    
+    
+});
+
+
+
 
 /* The navigation window will open once the page loads
  *	Depending on the width of the window then nav's width will display accordingly
@@ -311,13 +328,14 @@ var ViewModel = function(){
  	 		}, self);
 
  	 //this will be set the current restaurant in the observable list to the one at index 0
-    this.currentRestaurant = ko.observable(this.restaurantList[0]);
+    this.currentRestaurant = ko.observable(this.filteredList[0]);
+   
     // when the user clicks a specific restuarant on the list, it will reset the currentRestaurant to the one they selected
 	this.setRestaurant = function(place){
+			$('.intro').remove();
 			self.currentRestaurant(place);
 			requestFourSquare(place.location());
-			toggleBounce(markersArray[place.index]);
-			
+			toggleBounce(markersArray[place.index]);		
 	 };
 
 
@@ -335,16 +353,16 @@ var ViewModel = function(){
 
 };
 
-
 function requestFourSquare(location){
 
 	//FOUR SQUARE
     var latlong = location.lat + "," + location.lng;
     var CLIENT_ID = '3IVGPORHDKYSW3UJUI4RXOZASB3Y3ESIDZT4HH4TV3GJ5SPO';
-    var CLIENT_SECRET = 'SCQYO3CFBWVOHBYK4HUMBBXF3VUIF5ETZPD01BXTGBO2YW00';
+    var CLIENT_SECRET = '4QCTDJU0DCNE0NF032RKU54WVCG0HHWFUSLBFLE3AKOKLA4U';
     var VERSION = '20170401';
     //'39.283959,-76.585578'
     var url = 'https://api.foursquare.com/v2/venues/search';
+    var venue_id;
       
         $.ajax({
           url: url,
@@ -358,11 +376,71 @@ function requestFourSquare(location){
             async: true
           },
           success: function(data) {
-            console.log(data.venues);
+          	venue_id = data.response.venues[0].id
+          	getPhotos(venue_id);
           }
         }).fail(function (e) {
           console.log(e);
         });
+
+}
+
+
+function getPhotos(id){
+
+	$('.item').remove();
+	flag = true;
+	var length;
+
+	var CLIENT_ID = '3IVGPORHDKYSW3UJUI4RXOZASB3Y3ESIDZT4HH4TV3GJ5SPO';
+    var CLIENT_SECRET = '4QCTDJU0DCNE0NF032RKU54WVCG0HHWFUSLBFLE3AKOKLA4U';
+    var VERSION = '20170401';
+    var image;
+    var img_link;
+
+	 $.ajax({
+          url: 'https://api.foursquare.com/v2/venues/' + id + '/photos',
+          dataType: 'json',
+          data: {
+            client_id: CLIENT_ID,
+            client_secret: CLIENT_SECRET,
+            v: VERSION,
+            async: true
+          },
+          success: function(data) {
+            length = data.response.photos.count;
+            for(var i = 0; i < length; i++){
+            	image = data.response.photos.items[i];
+            	img_link = image.prefix+ "height100" + image.suffix;
+            	appendPhotos(img_link);
+            }
+          }
+        }).fail(function (e) {
+          console.log(e + "second part");
+        });
+
+
+}
+
+function appendPhotos(source){
+
+	var element;
+	var img_href = source.replace("height100","height300");
+
+	if(flag){
+		element = '<div class="item active"><div class="row"><div class="col-sm-12">'+
+		'<a href="' +  img_href  + '" class="thumbnail">'+
+		'<img src="' + source + '" height="100px" alt="Image" class="img-responsive"></a></div></div></div>';
+		flag = false;
+	}else{
+		element = '<div class="item"><div class="row"><div class="col-sm-12">'+
+		'<a href="' +  img_href  + '" class="thumbnail">'+
+		'<img src="' + source + '" alt="Image" class="img-responsive"></a></div></div></div>';
+	                                        
+	}
+
+    $(element).insertBefore('.insert-photos');                           
+                                                                 
 }
 
 /*
@@ -545,38 +623,38 @@ function initMap(){
 		styles: styles,
 		mapTypeControl: false
 	});
+		var largeInfoWindow = new google.maps.InfoWindow();
+		var bounds = new google.maps.LatLngBounds();
 
-	var largeInfoWindow = new google.maps.InfoWindow();
-	var bounds = new google.maps.LatLngBounds();
+		//loop through each restuarant and create a marker for each of them
+		//then push it into a markers array
+	    for(var i=0; i < model.restaurants.length; i++) {
 
-	//loop through each restuarant and create a marker for each of them
-	//then push it into a markers array
-    for(var i=0; i < model.restaurants.length; i++) {
+	    	var content = model.restaurants[i].url;
+	    	var position = model.restaurants[i].location;
+	    	var title = model.restaurants[i].name;
+	    	var street = model.restaurants[i].street;
+	    	var city = model.restaurants[i].city;
+	    	var marker = new google.maps.Marker({
+	    		position: position,
+	    		title: title,
+	    		icon: {url: 'img/pin-sm.png'},
+	    		animation: google.maps.Animation.DROP,
+	    		id: i
+	    	});	
+	    	//this will take all the markers and calculate the map's bounds
+			bounds.extend(marker.position);
+			markersArray.push(marker);
+			// each marker will have a click listener, which when it is selected will bounce and then display it's street view
+			marker.addListener('click', function(){
+				toggleBounce(this);
+				populateInfoWindow(this, largeInfoWindow);	
+				//ViewModel.setRestaurant(model.restaurants[marker.id]);
 
-    	var content = model.restaurants[i].url;
+			});
 
-    	var position = model.restaurants[i].location;
-    	var title = model.restaurants[i].name;
-    	var street = model.restaurants[i].street;
-    	var city = model.restaurants[i].city;
-    	var marker = new google.maps.Marker({
-    		position: position,
-    		title: title,
-    		icon: {url: 'img/pin-sm.png'},
-    		animation: google.maps.Animation.DROP,
-    		id: i
-    	});	
-    	//this will take all the markers and calculate the map's bounds
-		bounds.extend(marker.position);
-		markersArray.push(marker);
-		// each marker will have a click listener, which when it is selected will bounce and then display it's street view
-		marker.addListener('click', function(){
-			toggleBounce(this);
-			populateInfoWindow(this, largeInfoWindow);		
-		});
     }
 
-    
     /*
      *  This function is taken from the Udacity's video tutorials. It will create an info window with the google street view
      *  I modified it slightly to fit my design
@@ -584,12 +662,21 @@ function initMap(){
 
     function populateInfoWindow(marker, infowindow){
 
+    	$('#title').text(model.restaurants[marker.id].name);
+    	$('#website').attr("href",model.restaurants[marker.id].url);
+    	$('#website').text("Check Out the Website");
+    	$('#address').text(model.restaurants[marker.id].street);
+		$('#comments').text(model.restaurants[marker.id].comments);
+
+    	requestFourSquare(model.restaurants[marker.id].location);
+
     	if(infowindow.marker != marker){
     		infowindow.setContent('');
     		infowindow.marker = marker;   		
     		//make sure the marker property is cleared if the inforwindow is closed
     		infowindow.addListener('closeclick', function(){
     			infowindow.marker = null;
+    			$('.item').empty();
     		});
 
     		//get google street view
@@ -674,5 +761,6 @@ function toggleMarkers(){
 //initMap is called once the google map api is retreived
 //openNav() is called to automatically display the navBar
 //ko.applyBuringings is called to set up the knockout observables
+
 openNav();      
 ko.applyBindings(new ViewModel());
