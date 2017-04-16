@@ -1,6 +1,6 @@
 # neighborhood-project
 
-### References & Material Implemented:
+## References & Material Implemented:
 - Google Maps API
 - Four Square API for Images
 - Bootstrap.js
@@ -13,7 +13,9 @@
 - https://www.w3schools.com/howto/howto_js_sidenav.asp
 - Udacity FEWD tutorials
 
-***You can download or git clone this repo. 
-****Open it in your browser with Ctrl+O and click on index.html
+### You can download or clone this repo
+git clone https://github.com/mhafer/neighborhood-project.git
+
+#### Open it in your browser with Ctrl+O and click on index.html
 
 [View it here](https://mhafer.github.io/neighborhood-project/)
