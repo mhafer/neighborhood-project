@@ -1,22 +1,15 @@
 // global variables
 var map;
 var markersArray = [];
+var img_arr = [];
 var showMarkers = true;
 var flag;
+var itemIsVisible;
 var CLIENT_ID = '3IVGPORHDKYSW3UJUI4RXOZASB3Y3ESIDZT4HH4TV3GJ5SPO';
 var CLIENT_SECRET = '4QCTDJU0DCNE0NF032RKU54WVCG0HHWFUSLBFLE3AKOKLA4U';
 var VERSION = '20170401';
 
-// added in order to fix google map error and undefined ko error, needed to load the map in my js file instead of html, then call initMap()
-function loadScript() {	
-  var script = document.createElement('script');
-  script.type = 'text/javascript';
-  script.src = "https://maps.googleapis.com/maps/api/js?libraries=geometry&key=AIzaSyC0TkfOlixEJ_CtnCSIu3eVnt5yUXJuuGE&v=3&callback=initMap"; onerror="googleError()";
-  document.body.appendChild(script);
-}
-// calls the above function
-window.onload = loadScript;
-
+// if the map fails to load this will alert the user via allert window message
 function googleError(){
 	console.log("error loading map");
 	alert("Sorry, but we are unable to load the map at the moment, please try again later");
@@ -288,13 +281,13 @@ var model = {
  */
 var Restaurant = function(data){
 
-	this.name = ko.observable(data.name);
-	this.street = ko.observable(data.street);
-	this.city = ko.observable(data.city);
-	this.type = ko.observableArray(data.type);
-	this.comments = ko.observable(data.comments);
-	this.url = ko.observable(data.url);
-	this.location = ko.observable(data.location);
+	this.name = data.name;
+	this.street = data.street;
+	this.city = data.city;
+	this.type = data.type;
+	this.comments = data.comments;
+	this.url = data.url;
+	this.location = data.location;
 	this.index = data.index;
 
 };
@@ -306,6 +299,10 @@ var Restaurant = function(data){
 var ViewModel = function(){
 
  	var self = this;
+
+ 	this.restaurantPhoto = ko.observableArray([]);
+
+ 	this.visibleWelcome = ko.observable(true); 
  	// this array will hold/save the list of restaurant objects created
  	this.restaurantList = ko.observableArray([]);
  	// this observable is set on the search bar and will update on every key down
@@ -326,7 +323,7 @@ var ViewModel = function(){
   	 					return self.restaurantList();
   	 				}else{	 				
   	 					return ko.utils.arrayFilter(self.restaurantList(), function(item){
-  	 						return stringStartsWith(item.name().toLowerCase(), filter);
+  	 						return item.name.toLowerCase().indexOf(filter) !== -1;
   	 					});
   	 				}
  	 		}, self);
@@ -338,11 +335,16 @@ var ViewModel = function(){
     // the intro message will be removed
     // a request to foursqaure will revieve images of the place
     // the marker will be animated
-	this.setRestaurant = function(place){
-			$('.intro').remove();
+	this.setRestaurant = function(place){			
 			self.currentRestaurant(place);
-			requestFourSquare(place.location());
-			toggleBounce(markersArray[place.index]);		
+			requestFourSquare(place.location);
+			self.visibleWelcome(!self.visibleWelcome());
+			toggleBounce(markersArray[place.index]);
+
+			//attempt to make the images appear via knockout insteadof JQuery
+			img_arr.forEach(function(img){
+	 		    self.restaurantPhoto.push(img);
+	 	 });		
 	 };
 
 
@@ -397,7 +399,9 @@ function requestFourSquare(location){
 function getPhotos(id){
 
 	// first, remove any previouse image items
-	$('.item').remove();
+	if(itemIsVisible){
+		itemIsVisible(!itemIsVisible());
+	}
 	// this flag will set the class of the first item to 'active'
 	flag = true;
 	// the length will hold the returned value of the number of images, the 'count'
@@ -418,40 +422,60 @@ function getPhotos(id){
           success: function(data) {
             length = data.response.photos.count;
             // for each retirevied image, loop through and get the url, then pass is to the appendPhotos()
-            for(var i = 0; i < length; i++){
+          for(var i = 0; i < length; i++){
             	image = data.response.photos.items[i];
-            	img_link = image.prefix+ "height100" + image.suffix;
-            	appendPhotos(img_link);
-            }
-          }
+            	img_link = image.prefix+ "height100" + image.suffix;          	
+           		appendPhoto(img_link);       
+	          }
+	      }
         }).fail(function (e) {
           console.log(e);
           alert("Sorry, but we are unable to retrieve photos right now");
         });
 
-
+	
 }
 
-function appendPhotos(source){
+var FourSquareImage = function(v1, v2){
+
+	this.img_href = v1;
+	this.source = v2;
+};
+
+function appendPhoto(source){
+
+
+	//new attempt with knockouts.js
+	var img_href = source.replace("height100","height300");
+	var newImg = new FourSquareImage(img_href, source);
+	img_arr.push(newImg);
+
+/*	
+
+//the following is my old way using JQuery and manipulating the DOM
+
 
 	var element;
-	// we want the image to enlarge when the user clicks so we will assign the href a larger img url
+	//we want the image to enlarge when the user clicks so we will assign the href a larger img url
 	var img_href = source.replace("height100","height300");
-
-	// if its the first item, set the class to active
+	//if its the first item, set the class to active
 	if(flag){
-		element = '<div class="item active"><div class="row"><div class="col-sm-12">'+
+		element = '<div class="item active" data-bind="visible: itemIsVisible"><div class="row"><div class="col-sm-12">'+
 		'<a href="' +  img_href  + '" class="thumbnail">'+
 		'<img src="' + source + '" height="100px" alt="Image" class="img-responsive"></a></div></div></div>';
 		flag = false;
 	}else{
-		element = '<div class="item"><div class="row"><div class="col-sm-12">'+
+		element = '<div class="item" data-bind="visible: itemIsVisible" ><div class="row"><div class="col-sm-12">'+
 		'<a href="' +  img_href  + '" class="thumbnail">'+
 		'<img src="' + source + '" alt="Image" class="img-responsive"></a></div></div></div>';
 	                                        
 	}
+
+	//itemIsVisible = ko.observable(true); 
 	//each new item created will be inserted into our html
-    $(element).insertBefore('.insert-photos');                           
+    $(element).insertBefore('.insert-photos');  
+
+*/
                                                                  
 }
 
