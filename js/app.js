@@ -1,8 +1,10 @@
 // global variables
 var map;
+var marker;
 var markersArray = [];
 var showMarkers = true;
 var flag;
+
 
 var CLIENT_ID = '3IVGPORHDKYSW3UJUI4RXOZASB3Y3ESIDZT4HH4TV3GJ5SPO';
 var CLIENT_SECRET = '4QCTDJU0DCNE0NF032RKU54WVCG0HHWFUSLBFLE3AKOKLA4U';
@@ -288,6 +290,7 @@ var Restaurant = function(data){
 	this.url = data.url;
 	this.location = data.location;
 	this.index = data.index;
+	this.marker = ko.observable();
 
 };
 
@@ -299,6 +302,7 @@ var ViewModel = function(){
 
  	var self = this;
 
+ 	// this is to store images from fourSquare
  	this.restaurantPhoto = ko.observableArray([]);
 
  	this.visibleWelcome = ko.observable(true); 
@@ -319,14 +323,22 @@ var ViewModel = function(){
  	 this.filteredList = ko.computed(function() {
  	 		var filter = this.filter().toLowerCase();
   	 				if(!filter){
+
+  	 					//set all markers to visible
+  	 					for(var m = 0; m < markersArray.length; m++){
+  	 						markersArray[m].setVisible(true);
+  	 					}
   	 					return self.restaurantList();
-  	 				}else{	 		
-	 					 return ko.utils.arrayFilter(self.restaurantList(), function(item){ 
+  	 				}else{	 	
+	 					 return ko.utils.arrayFilter(self.restaurantList(), function(item){ 					 
   	 						var match = item.name.toLowerCase().indexOf(filter) !== -1;
-  	 						if(match){ 
-	  	 						console.log(item);
-	  	 					}
-  	 						return match;	 						 						
+  	 						var index = item.index;	
+
+  	 						//if it doesnt match then set that marker's vibility to false
+  	 						if(!match){
+  	 							markersArray[index].setVisible(false);
+  	 						}
+  	 						 return match;					 						
   	 					});
   	 				}
 
@@ -350,7 +362,6 @@ var ViewModel = function(){
 	 	 		
 	 };
 
-
 	//knockout.js removed their stringStartsWith method, this solution to make your own I found on stackoverflow
 	//http://stackoverflow.com/questions/28042344/filter-using-knockoutjs
 	//it was simple and worked well so I decided to keep it
@@ -360,6 +371,9 @@ var ViewModel = function(){
 	        return false;
 	    return string.substring(0, startsWith.length) === startsWith;
 	};
+
+
+	//toggleMarkers();
 
 };
 
@@ -419,7 +433,10 @@ function getPhotos(id){
           success: function(data) {
             length = data.response.photos.count;
             vm.restaurantPhoto([]);
-            // for each retirevied image, loop through and get the url, then pass is to the appendPhotos()
+            // for each retirevied image, loop through and get the url
+            // store another url with size of 300 for the href
+            // pass that with the index and make a fourSquare object
+            // push that object into the restaurantPhoto list, which will update automatically since its an observable
           for(var i = 0; i < length; i++){
             	image = data.response.photos.items[i];
             	img_link = image.prefix+ "height100" + image.suffix;
@@ -435,6 +452,7 @@ function getPhotos(id){
 	
 }
 
+// this creates an object out of each image from foursquare, it will also set the first image to active for the carousel
 var FourSquareImage = function(v1, v2, i){
 
 	this.img_href = v1;
@@ -654,6 +672,7 @@ function initMap(){
 
     }
 
+
     /*
      *  This function is taken from the Udacity's video tutorials. It will create an info window with the google street view
      *  I modified it slightly to fit my design
@@ -704,7 +723,7 @@ function initMap(){
     	
     }
     //this will initially drop all the markers down
-    //toggleMarkers();	
+    toggleMarkers();	
 
 }
 
@@ -738,20 +757,6 @@ function toggleMarkers(){
 
 }
 
-function filterMarkers(){
-
-	var bounds = new google.maps.LatLngBounds();
-
-	vm.filteredList.forEach()
-		for(var i = 0; i < vm.filteredList.length; i++){
-			markersArray[i].setMap(map);
-			//markersArray[i].setAnimation(google.maps.Animation.DROP);
-			bounds.extend(markersArray[i].position);	
-		}
-		map.fitBounds(bounds);
-
-}
-
 /*
  *  If a restaurant from the list is clicked it will animate that specific marker
  */
@@ -766,13 +771,6 @@ function filterMarkers(){
   	setTimeout(function(){ 
   		marker.setAnimation(null);   
   	}, 2100);
-}
-
-
-function resetMap() {
-	markersArray.forEach(function(pin){
-		pin.setMap(null);
-	});
 }
 
 //initMap is called once the google map api is retreived
