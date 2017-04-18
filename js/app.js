@@ -1,10 +1,9 @@
 // global variables
 var map;
 var markersArray = [];
-var img_arr = [];
 var showMarkers = true;
 var flag;
-var itemIsVisible;
+
 var CLIENT_ID = '3IVGPORHDKYSW3UJUI4RXOZASB3Y3ESIDZT4HH4TV3GJ5SPO';
 var CLIENT_SECRET = '4QCTDJU0DCNE0NF032RKU54WVCG0HHWFUSLBFLE3AKOKLA4U';
 var VERSION = '20170401';
@@ -320,19 +319,18 @@ var ViewModel = function(){
  	 this.filteredList = ko.computed(function() {
  	 		var filter = this.filter().toLowerCase();
   	 				if(!filter){
-  	 					//toggleMarkers();
   	 					return self.restaurantList();
   	 				}else{	 		
-  	 					//toggleMarkers();	
-  	 					resetMap();	
-  	 					return ko.utils.arrayFilter(self.restaurantList(), function(item){ 
-  	 						return  item.name.toLowerCase().indexOf(filter) !== -1;	 						
+	 					 return ko.utils.arrayFilter(self.restaurantList(), function(item){ 
+  	 						var match = item.name.toLowerCase().indexOf(filter) !== -1;
+  	 						if(match){ 
+	  	 						console.log(item);
+	  	 					}
+  	 						return match;	 						 						
   	 					});
   	 				}
 
  	 		}, self);
-
-
 
  	 //this will be set the current restaurant in the observable list to the one at index 0
     this.currentRestaurant = ko.observable(this.filteredList[0]);
@@ -349,13 +347,6 @@ var ViewModel = function(){
 				self.visibleWelcome(!self.visibleWelcome());
 			}
 			toggleBounce(markersArray[place.index]);
-
-			
-			img_arr.forEach(function(img){
-	 		    self.restaurantPhoto.push(img);
-	 		    console.log(self.restaurantPhoto());
-	 	 });
-
 	 	 		
 	 };
 
@@ -408,16 +399,6 @@ function requestFourSquare(location){
 
 function getPhotos(id){
 
-	 	    
-     var vm = new ViewModel();
-     //ko.removeNode(vm, document.getElementById('clearBindings')); 
-     //ko.cleanNode(vm, document.getElementById('clearBindings'));  
-	
-	if(itemIsVisible){
-		itemIsVisible(!itemIsVisible());
-	}
-	// this flag will set the class of the first item to 'active'
-	flag = true;
 	// the length will hold the returned value of the number of images, the 'count'
 	var length;
     var image;
@@ -438,27 +419,19 @@ function getPhotos(id){
           success: function(data) {
             length = data.response.photos.count;
             vm.restaurantPhoto([]);
-            //img_arr = [];
             // for each retirevied image, loop through and get the url, then pass is to the appendPhotos()
           for(var i = 0; i < length; i++){
             	image = data.response.photos.items[i];
             	img_link = image.prefix+ "height100" + image.suffix;
             	img_href = img_link.replace("height100","height300");
             	newImg = new FourSquareImage(img_href, img_link, i);
-            	img_arr.push(newImg);
-            	//vm.restaurantPhoto.push(newImg);          	       
-	          }
-
-	       	//ko.applyBindings(vm);   
-	        
+            	vm.restaurantPhoto.push(newImg);          	       
+	          }	        
 	      }
         }).fail(function (e) {
           console.log(e);
           alert("Sorry, but we are unable to retrieve photos right now");
         });
-
-       
-	 
 	
 }
 
@@ -470,48 +443,7 @@ var FourSquareImage = function(v1, v2, i){
 		this.isActive = true;
 	}else this.isActive = false;
 };
-
-function appendPhoto(source){
-
-	// var vm = new ViewModel();
-	// ko.applyBindings(vm);
-
-	//new attempt with knockouts.js
-	var img_href = source.replace("height100","height300");
-	var newImg = new FourSquareImage(img_href, source);
-	//img_arr.push(newImg);
-
 	
-
-/*	
-
-//the following is my old way using JQuery and manipulating the DOM
-
-
-	var element;
-	//we want the image to enlarge when the user clicks so we will assign the href a larger img url
-	var img_href = source.replace("height100","height300");
-	//if its the first item, set the class to active
-	if(flag){
-		element = '<div class="item active" data-bind="visible: itemIsVisible"><div class="row"><div class="col-sm-12">'+
-		'<a href="' +  img_href  + '" class="thumbnail">'+
-		'<img src="' + source + '" height="100px" alt="Image" class="img-responsive"></a></div></div></div>';
-		flag = false;
-	}else{
-		element = '<div class="item" data-bind="visible: itemIsVisible" ><div class="row"><div class="col-sm-12">'+
-		'<a href="' +  img_href  + '" class="thumbnail">'+
-		'<img src="' + source + '" alt="Image" class="img-responsive"></a></div></div></div>';
-	                                        
-	}
-
-	//itemIsVisible = ko.observable(true); 
-	//each new item created will be inserted into our html
-    $(element).insertBefore('.insert-photos');  
-
-*/
-                                                                 
-}
-
 /*
  * 	SETS UP THE INITIAL DISPLAY
  */
@@ -729,13 +661,10 @@ function initMap(){
 
     function populateInfoWindow(marker, infowindow){
 
-  //   	$('#title').text(model.restaurants[marker.id].name);
-  //   	$('#website').attr("href",model.restaurants[marker.id].url);
-  //   	$('#website').text("Check Out the Website");
-  //   	$('#address').text(model.restaurants[marker.id].street);
-		// $('#comments').text(model.restaurants[marker.id].comments);
-
+    	//set the images in the orange box
     	requestFourSquare(model.restaurants[marker.id].location);
+    	//sets the place information in the orange box
+    	vm.setRestaurant(model.restaurants[marker.id]);
 
     	if(infowindow.marker != marker){
     		infowindow.setContent('');
@@ -775,7 +704,7 @@ function initMap(){
     	
     }
     //this will initially drop all the markers down
-    toggleMarkers();	
+    //toggleMarkers();	
 
 }
 
@@ -809,6 +738,20 @@ function toggleMarkers(){
 
 }
 
+function filterMarkers(){
+
+	var bounds = new google.maps.LatLngBounds();
+
+	vm.filteredList.forEach()
+		for(var i = 0; i < vm.filteredList.length; i++){
+			markersArray[i].setMap(map);
+			//markersArray[i].setAnimation(google.maps.Animation.DROP);
+			bounds.extend(markersArray[i].position);	
+		}
+		map.fitBounds(bounds);
+
+}
+
 /*
  *  If a restaurant from the list is clicked it will animate that specific marker
  */
@@ -835,6 +778,6 @@ function resetMap() {
 //initMap is called once the google map api is retreived
 //openNav() is called to automatically display the navBar
 //ko.applyBuringings is called to set up the knockout observables
-
+var vm = new ViewModel();
 openNav();      
-ko.applyBindings(new ViewModel());
+ko.applyBindings(vm);
