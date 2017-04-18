@@ -320,13 +320,19 @@ var ViewModel = function(){
  	 this.filteredList = ko.computed(function() {
  	 		var filter = this.filter().toLowerCase();
   	 				if(!filter){
+  	 					//toggleMarkers();
   	 					return self.restaurantList();
-  	 				}else{	 				
-  	 					return ko.utils.arrayFilter(self.restaurantList(), function(item){
-  	 						return item.name.toLowerCase().indexOf(filter) !== -1;
+  	 				}else{	 		
+  	 					//toggleMarkers();	
+  	 					resetMap();	
+  	 					return ko.utils.arrayFilter(self.restaurantList(), function(item){ 
+  	 						return  item.name.toLowerCase().indexOf(filter) !== -1;	 						
   	 					});
   	 				}
+
  	 		}, self);
+
+
 
  	 //this will be set the current restaurant in the observable list to the one at index 0
     this.currentRestaurant = ko.observable(this.filteredList[0]);
@@ -335,16 +341,22 @@ var ViewModel = function(){
     // the intro message will be removed
     // a request to foursqaure will revieve images of the place
     // the marker will be animated
-	this.setRestaurant = function(place){			
+	this.setRestaurant = function(place){
+
 			self.currentRestaurant(place);
 			requestFourSquare(place.location);
-			self.visibleWelcome(!self.visibleWelcome());
+			if(self.visibleWelcome() === true){
+				self.visibleWelcome(!self.visibleWelcome());
+			}
 			toggleBounce(markersArray[place.index]);
 
-			//attempt to make the images appear via knockout insteadof JQuery
+			
 			img_arr.forEach(function(img){
 	 		    self.restaurantPhoto.push(img);
-	 	 });		
+	 		    console.log(self.restaurantPhoto());
+	 	 });
+
+	 	 		
 	 };
 
 
@@ -357,8 +369,6 @@ var ViewModel = function(){
 	        return false;
 	    return string.substring(0, startsWith.length) === startsWith;
 	};
-
-
 
 };
 
@@ -398,7 +408,11 @@ function requestFourSquare(location){
 
 function getPhotos(id){
 
-	// first, remove any previouse image items
+	 	    
+     var vm = new ViewModel();
+     //ko.removeNode(vm, document.getElementById('clearBindings')); 
+     //ko.cleanNode(vm, document.getElementById('clearBindings'));  
+	
 	if(itemIsVisible){
 		itemIsVisible(!itemIsVisible());
 	}
@@ -409,6 +423,8 @@ function getPhotos(id){
     var image;
     // variables to store the img urls
     var img_link;
+    var img_href;
+    var newImg;
 
 	 $.ajax({
           url: 'https://api.foursquare.com/v2/venues/' + id + '/photos',
@@ -421,34 +437,51 @@ function getPhotos(id){
           },
           success: function(data) {
             length = data.response.photos.count;
+            vm.restaurantPhoto([]);
+            //img_arr = [];
             // for each retirevied image, loop through and get the url, then pass is to the appendPhotos()
           for(var i = 0; i < length; i++){
             	image = data.response.photos.items[i];
-            	img_link = image.prefix+ "height100" + image.suffix;          	
-           		appendPhoto(img_link);       
+            	img_link = image.prefix+ "height100" + image.suffix;
+            	img_href = img_link.replace("height100","height300");
+            	newImg = new FourSquareImage(img_href, img_link, i);
+            	img_arr.push(newImg);
+            	//vm.restaurantPhoto.push(newImg);          	       
 	          }
+
+	       	//ko.applyBindings(vm);   
+	        
 	      }
         }).fail(function (e) {
           console.log(e);
           alert("Sorry, but we are unable to retrieve photos right now");
         });
 
+       
+	 
 	
 }
 
-var FourSquareImage = function(v1, v2){
+var FourSquareImage = function(v1, v2, i){
 
 	this.img_href = v1;
 	this.source = v2;
+	if(i === 0){
+		this.isActive = true;
+	}else this.isActive = false;
 };
 
 function appendPhoto(source){
 
+	// var vm = new ViewModel();
+	// ko.applyBindings(vm);
 
 	//new attempt with knockouts.js
 	var img_href = source.replace("height100","height300");
 	var newImg = new FourSquareImage(img_href, source);
-	img_arr.push(newImg);
+	//img_arr.push(newImg);
+
+	
 
 /*	
 
@@ -696,11 +729,11 @@ function initMap(){
 
     function populateInfoWindow(marker, infowindow){
 
-    	$('#title').text(model.restaurants[marker.id].name);
-    	$('#website').attr("href",model.restaurants[marker.id].url);
-    	$('#website').text("Check Out the Website");
-    	$('#address').text(model.restaurants[marker.id].street);
-		$('#comments').text(model.restaurants[marker.id].comments);
+  //   	$('#title').text(model.restaurants[marker.id].name);
+  //   	$('#website').attr("href",model.restaurants[marker.id].url);
+  //   	$('#website').text("Check Out the Website");
+  //   	$('#address').text(model.restaurants[marker.id].street);
+		// $('#comments').text(model.restaurants[marker.id].comments);
 
     	requestFourSquare(model.restaurants[marker.id].location);
 
@@ -710,7 +743,6 @@ function initMap(){
     		//make sure the marker property is cleared if the inforwindow is closed
     		infowindow.addListener('closeclick', function(){
     			infowindow.marker = null;
-    			$('.item').empty();
     		});
 
     		//get google street view
@@ -718,8 +750,8 @@ function initMap(){
     		var radius = 30;
     		streetViewService.getPanoramaByLocation(marker.position, radius, getStreetView);
     		
-				var nearStreetViewLocation;
-        var heading;
+			var nearStreetViewLocation;
+       		 var heading;
     		function getStreetView(data, status){
     			if(status == google.maps.StreetViewStatus.OK) {
     				nearStreetViewLocation= data.location.latLng;
@@ -791,6 +823,13 @@ function toggleMarkers(){
   	setTimeout(function(){ 
   		marker.setAnimation(null);   
   	}, 2100);
+}
+
+
+function resetMap() {
+	markersArray.forEach(function(pin){
+		pin.setMap(null);
+	});
 }
 
 //initMap is called once the google map api is retreived

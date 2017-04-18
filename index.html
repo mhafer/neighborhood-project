@@ -59,21 +59,17 @@
                     <!-- this is my implementation using knockout.js -->
                     <div class="sliding-img">
                         <div id="myCarousel" class="carousel slide">
-                            <div class="carousel-inner">
-                                <div data-bind="visible: restaurantPhoto().length > 0" >
-                                    <!-- PROBLEM I need to recreate each row and column given the number of photos I get returned
-                                    Knockout only creates the <a> and <img> tag -->
-                                    <div class="item active" data-bind="foreach: restaurantPhoto">
-                                        <div class="row">
-                                            <div class="col-sm-12">
-                                                <a  data-bind="attr:{href: img_href}" target="_blank" class="thumbnail">
-                                                <img data-bind="attr:{src: source}" height="100px" alt="Image" class="img-responsive"></a>
-                                            </div>
+                            <div id="clearBinding" class="carousel-inner" data-bind="visible: restaurantPhoto().length > 0, foreach: restaurantPhoto">
+                                <div class="item active" data-bind="css: { active: isActive }">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <a  data-bind="attr:{href: img_href}" target="_blank" class="thumbnail">
+                                            <img data-bind="attr:{src: source}" height="100px" alt="Image" class="img-responsive"></a>
                                         </div>
                                     </div>
-                                    <!-- Need to recreate the above block forEach restaurantPhoto, rows and columns included -->
                                 </div>
-                             <a class="insert-photos left carousel-control" href="#myCarousel" data-slide="prev">‹</a> <a class="right carousel-control" href="#myCarousel" data-slide="next">›</a> </div>
+                                <a class="insert-photos left carousel-control" href="#myCarousel" data-slide="prev">‹</a> <a class="right carousel-control" href="#myCarousel" data-slide="next">›</a>
+                             </div>
                         </div>
                     </div>
                 </div>
