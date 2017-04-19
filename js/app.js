@@ -323,22 +323,16 @@ var ViewModel = function(){
  	 this.filteredList = ko.computed(function() {
  	 		var filter = this.filter().toLowerCase();
   	 				if(!filter){
-
   	 					//set all markers to visible
   	 					for(var m = 0; m < markersArray.length; m++){
   	 						markersArray[m].setVisible(true);
   	 					}
   	 					return self.restaurantList();
-  	 				}else{	 	
+  	 				}else{	 
 	 					 return ko.utils.arrayFilter(self.restaurantList(), function(item){ 					 
-  	 						var match = item.name.toLowerCase().indexOf(filter) !== -1;
-  	 						var index = item.index;	
-
-  	 						//if it doesnt match then set that marker's vibility to false
-  	 						if(!match){
-  	 							markersArray[index].setVisible(false);
-  	 						}
-  	 						 return match;					 						
+	  	 						var match = item.name.toLowerCase().indexOf(filter) !== -1;	
+	  	 						markersArray[item.index].setVisible(match);
+	  	 						return match;					 						 	 						
   	 					});
   	 				}
 
@@ -667,6 +661,7 @@ function initMap(){
 			// each marker will have a click listener, which when it is selected will bounce and then display it's street view
 			marker.addListener('click', function(){
 				toggleBounce(this);
+				this.setAnimation(google.maps.Animation.BOUNCE);
 				populateInfoWindow(this, largeInfoWindow);				
 			});
 
@@ -761,12 +756,8 @@ function toggleMarkers(){
  *  If a restaurant from the list is clicked it will animate that specific marker
  */
  function toggleBounce(marker) {
-      
-	if (marker.getAnimation() !== null) {
-          marker.setAnimation(null);
-    } else {
-      	  marker.setAnimation(google.maps.Animation.BOUNCE);
-    }
+
+ 	marker.setAnimation(google.maps.Animation.BOUNCE);
     // the time begins immediately after the animation, it runs for 2.1 seconds then calls for the animation to stop. This should make the marker bound 3 times.  	         
   	setTimeout(function(){ 
   		marker.setAnimation(null);   
